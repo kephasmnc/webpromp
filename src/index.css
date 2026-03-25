@@ -1,0 +1,112 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background: #0a0b0f;
+    color: #f1f5f9;
+    font-family: 'DM Sans', system-ui, sans-serif;
+    overflow: hidden;
+    height: 100vh;
+  }
+
+  #root {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+
+  /* Scrollbar styling */
+  ::-webkit-scrollbar {
+    width: 4px;
+    height: 4px;
+  }
+  ::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #2a2d3a;
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #3a3d4a;
+  }
+}
+
+@layer components {
+  .input-base {
+    @apply w-full bg-surface border border-[#252836] rounded-lg px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-150;
+  }
+
+  .label-base {
+    @apply block text-xs font-medium text-slate-400 mb-1.5;
+  }
+
+  .section-header {
+    @apply flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3;
+  }
+
+  .btn-primary {
+    @apply bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors duration-150 flex items-center gap-2;
+  }
+
+  .btn-ghost {
+    @apply text-slate-400 hover:text-slate-200 hover:bg-white/5 text-sm px-2 py-1.5 rounded-md transition-all duration-150 flex items-center gap-1.5;
+  }
+
+  .card-surface {
+    @apply bg-panel border border-[#252836] rounded-xl;
+  }
+
+  .prompt-token {
+    @apply text-indigo-400;
+  }
+  .prompt-section-header {
+    @apply text-emerald-400 font-semibold;
+  }
+  .prompt-label {
+    @apply text-amber-400;
+  }
+  .prompt-value {
+    @apply text-slate-200;
+  }
+}
+
+/* Smooth scrolling for panels */
+.scrollable {
+  overflow-y: auto;
+  scrollbar-width: thin;
+  scrollbar-color: #2a2d3a transparent;
+}
+
+/* Color swatch */
+.color-swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.1);
+  flex-shrink: 0;
+}
+
+/* Vibe tag */
+.vibe-tag {
+  @apply px-3 py-1 rounded-full text-xs font-medium border cursor-pointer transition-all duration-150 select-none;
+}
+.vibe-tag.active {
+  @apply bg-indigo-500/20 border-indigo-500/50 text-indigo-300;
+}
+.vibe-tag.inactive {
+  @apply bg-transparent border-[#252836] text-slate-400 hover:border-slate-500 hover:text-slate-300;
+}
