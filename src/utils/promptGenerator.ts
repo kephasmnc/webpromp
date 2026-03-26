@@ -118,6 +118,22 @@ function buildDesignSystem(g: AppState['global']): string {
   return lines.join('\n')
 }
 
+// ─── Vibe → Design Language ────────────────────────────────────────────────────
+const VIBE_DESIGN_LANGUAGE: Record<string, string> = {
+  dark:        'Deep black/near-black backgrounds (#000–#0d0d0f), off-white foreground (#f0ede8). All surfaces stay dark — no light panels. Low-opacity borders (foreground/[0.06]–[0.10]).',
+  premium:     'Restrained, refined palette. Generous whitespace (py-24 md:py-36 between sections). Single precise accent color. No visual clutter — every element earns its place.',
+  minimal:     'Maximum negative space. Sparse layouts with almost no decoration. Typography carries all hierarchy. Grid-breaking asymmetry through restraint, not noise.',
+  vibrant:     'High-saturation accent colors, strong contrast between bg and foreground. Energetic palette with color pops. Avoid washed-out tones — make every color count.',
+  elegant:     'Serif or transitional display font for headings. Graceful letter-spacing (-0.03em to -0.05em). Soft drop shadows. Refined proportions — nothing feels rushed or blocky.',
+  bold:        'Heavy typography: font-weight 800–900 for headings, dramatic scale contrast (hero h1 80–100px vs body 16px). Vivid accent color used with confidence. Strong visual hierarchy.',
+  playful:     'Rounded shapes (border-radius 1rem–1.5rem on cards and buttons). Bright, cheerful accent. Friendly rounded sans-serif. Subtle tilt or overlap on decorative elements.',
+  modern:      'Clean geometric layouts. Contemporary sans-serif at all weights. Precise CSS grid. Minimal decoration — only purposeful visual elements remain.',
+  corporate:   'Professional blues and cool neutrals. Structured, symmetrical layouts. Trust signals (stats, certifications, logos) prominently placed. Formal but approachable tone.',
+  futuristic:  'Monospace or geometric type for labels/tags. Electric or neon accent on dark background. Scanline or subtle grid texture. Technical, precise aesthetic — like a dashboard.',
+  glassmorphic:'Frosted glass cards: backdrop-filter blur(8px–16px), rgba(255,255,255,0.04) bg, gradient-mask border via ::before pseudo. Layered depth through transparency.',
+  editorial:   'Magazine-style layouts. Dramatic typographic scale — some headings at 96px+. Text used as graphic element. Asymmetric column grids. Pull quotes styled as visual anchors.',
+}
+
 // ─── Global Patterns ──────────────────────────────────────────────────────────
 function buildGlobalPatterns(g: AppState['global']): string {
   const animConfig = getAnimConfig(g.animationIntensity)
@@ -126,9 +142,18 @@ function buildGlobalPatterns(g: AppState['global']): string {
   const sectionTagStyle = getSectionTagStyle(g.preset)
   const pillBadge = getPillBadgeStyle(g.preset)
 
-  const vibeStr = g.vibes.length > 0 ? g.vibes.join(', ') : 'dark, premium'
+  const vibes = g.vibes.length > 0 ? g.vibes : ['premium']
+  const vibeLabel = vibes.join(' + ')
 
-  return `Global patterns (vibe: ${vibeStr}):
+  // Build rich per-vibe design descriptions
+  const vibeDescriptions = vibes
+    .filter(v => VIBE_DESIGN_LANGUAGE[v])
+    .map(v => `[${v.toUpperCase()}] ${VIBE_DESIGN_LANGUAGE[v]}`)
+    .join('\n')
+
+  return `Global visual direction — ${vibeLabel}:
+${vibeDescriptions}
+
 Section tags: ${sectionTagStyle}
 Pill badges: ${pillBadge}
 Headings: ${headingStyle}
