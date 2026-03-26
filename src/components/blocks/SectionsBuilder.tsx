@@ -43,7 +43,7 @@ export function SectionsBuilder({ blocks, addBlock, removeBlock, toggleBlock, mo
   return (
     <div className="flex flex-col min-h-full">
       {/* Header */}
-      <div className="sticky top-0 z-10 bg-cream border-b-2 border-sand px-7 py-5 flex items-center justify-between">
+      <div className="sticky top-0 z-10 bg-cream border-b border-sand px-7 py-5 flex items-center justify-between">
         <div>
           <h2 className="text-xl font-extrabold text-ink">Sections</h2>
           <p className="text-[14px] text-mist font-semibold mt-0.5">Build your landing page section by section</p>
@@ -55,8 +55,8 @@ export function SectionsBuilder({ blocks, addBlock, removeBlock, toggleBlock, mo
           </button>
 
           {showMenu && (
-            <div className="absolute right-0 top-full mt-3 w-76 bg-white border-2 border-sand rounded-2xl shadow-xl shadow-ink/10 z-50 overflow-hidden animate-slide-down">
-              <div className="px-5 py-3.5 border-b-2 border-sand flex items-center justify-between">
+            <div className="absolute right-0 top-full mt-3 w-76 bg-white border border-sand rounded-2xl shadow-xl shadow-ink/10 z-50 overflow-hidden animate-slide-down">
+              <div className="px-5 py-3.5 border-b border-sand flex items-center justify-between">
                 <span className="text-[15px] font-extrabold text-ink">Add Section</span>
                 <button onClick={() => setShowMenu(false)} className="text-mist hover:text-ink transition-colors p-1">
                   <X className="w-5 h-5" />
@@ -69,7 +69,7 @@ export function SectionsBuilder({ blocks, addBlock, removeBlock, toggleBlock, mo
                     onClick={() => { addBlock(opt.type); setShowMenu(false) }}
                     className="w-full flex items-center gap-4 px-5 py-3.5 hover:bg-parchment transition-colors text-left"
                   >
-                    <span className="w-10 h-10 rounded-xl bg-beige border-2 border-sand flex items-center justify-center text-base text-mist flex-shrink-0">
+                    <span className="w-10 h-10 rounded-xl bg-beige border border-sand flex items-center justify-center text-base text-mist flex-shrink-0">
                       {opt.icon}
                     </span>
                     <div>

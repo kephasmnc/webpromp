@@ -10,9 +10,9 @@ export default function App() {
   return (
     <div className="flex flex-col h-screen bg-cream overflow-hidden">
       {/* Top bar */}
-      <header className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b-2 border-sand bg-white z-10 shadow-sm shadow-sand/30">
+      <header className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-sand bg-white z-10 shadow-sm shadow-sand/30">
         <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl bg-lilac-soft border-2 border-lilac/25 flex items-center justify-center">
+          <div className="w-10 h-10 rounded-xl bg-lilac-soft border border-lilac/25 flex items-center justify-center">
             <Layers className="w-5 h-5 text-lilac" />
           </div>
           <div>
@@ -34,7 +34,7 @@ export default function App() {
       {/* Main 3-column layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Global Setup */}
-        <aside className="w-[330px] flex-shrink-0 border-r-2 border-sand bg-parchment scrollable">
+        <aside className="w-[330px] flex-shrink-0 border-r border-sand bg-parchment scrollable">
           <GlobalSetup
             global={store.state.global}
             updateGlobal={store.updateGlobal}
@@ -55,7 +55,7 @@ export default function App() {
         </main>
 
         {/* Right: Prompt Panel */}
-        <aside className="w-[460px] flex-shrink-0 border-l-2 border-sand bg-parchment">
+        <aside className="w-[460px] flex-shrink-0 border-l border-sand bg-parchment">
           <PromptPanel state={store.state} />
         </aside>
       </div>

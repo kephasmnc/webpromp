@@ -22,7 +22,7 @@ interface SectionProps {
 function CollapsibleSection({ title, icon, children, defaultOpen = true }: SectionProps) {
   const [open, setOpen] = useState(defaultOpen)
   return (
-    <div className="border-b-2 border-sand">
+    <div className="border-b border-sand">
       <button
         onClick={() => setOpen(!open)}
         className="w-full flex items-center justify-between px-5 py-4 hover:bg-beige/50 transition-colors"
@@ -65,7 +65,7 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
   return (
     <div className="flex flex-col">
       {/* Subtitle */}
-      <div className="px-5 py-4 border-b-2 border-sand">
+      <div className="px-5 py-4 border-b border-sand">
         <p className="text-[14px] text-mist font-semibold leading-relaxed">
           Global settings apply to the entire generated landing page prompt.
         </p>
@@ -117,7 +117,7 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
             <button
               key={p.id}
               onClick={() => applyPreset(p.id)}
-              className={`w-full text-left px-4 py-3.5 rounded-xl border-2 transition-all duration-150 ${
+              className={`w-full text-left px-4 py-3.5 rounded-xl border transition-all duration-150 ${
                 g.preset === p.id
                   ? 'border-lilac/60 bg-lilac-soft'
                   : 'border-sand bg-white hover:border-lilac/30 hover:bg-beige/40'
@@ -193,13 +193,13 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
             <button
               key={opt.id}
               onClick={() => updateGlobal({ buttonStyle: opt.id })}
-              className={`flex flex-col items-center gap-3 p-4 border-2 rounded-xl transition-all duration-150 ${
+              className={`flex flex-col items-center gap-3 p-4 border rounded-xl transition-all duration-150 ${
                 g.buttonStyle === opt.id
                   ? 'border-lilac/60 bg-lilac-soft'
                   : 'border-sand bg-white hover:border-lilac/25 hover:bg-beige/40'
               }`}
             >
-              <div className={`h-5 w-14 border-2 ${g.buttonStyle === opt.id ? 'border-lilac' : 'border-mist/50'} ${opt.preview}`} />
+              <div className={`h-5 w-14 border ${g.buttonStyle === opt.id ? 'border-lilac' : 'border-mist/50'} ${opt.preview}`} />
               <span className={`text-[13px] font-bold ${g.buttonStyle === opt.id ? 'text-lilac' : 'text-mist'}`}>{opt.label}</span>
             </button>
           ))}

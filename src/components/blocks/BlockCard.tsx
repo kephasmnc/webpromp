@@ -110,7 +110,7 @@ export function BlockCard({ block, index, total, onToggle, onRemove, onMoveUp, o
             className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[14px] font-bold transition-all ml-1 ${
               expanded
                 ? 'bg-lilac text-white shadow-sm shadow-lilac/30'
-                : 'bg-beige text-mist hover:bg-lilac-soft hover:text-lilac border-2 border-sand hover:border-lilac/30'
+                : 'bg-beige text-mist hover:bg-lilac-soft hover:text-lilac border border-sand hover:border-lilac/30'
             }`}
           >
             <Settings2 className="w-4 h-4" />
@@ -121,7 +121,7 @@ export function BlockCard({ block, index, total, onToggle, onRemove, onMoveUp, o
 
       {/* Expanded Form */}
       {expanded && (
-        <div className="border-t-2 border-sand px-6 py-6 bg-parchment/60 rounded-b-2xl">
+        <div className="border-t border-sand px-6 py-6 bg-parchment/60 rounded-b-2xl">
           {renderForm()}
         </div>
       )}

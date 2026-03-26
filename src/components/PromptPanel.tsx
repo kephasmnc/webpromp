@@ -78,10 +78,10 @@ export function PromptPanel({ state }: Props) {
   return (
     <div className="flex flex-col h-full">
       {/* Header */}
-      <div className="flex-shrink-0 px-5 py-5 border-b-2 border-sand bg-white">
+      <div className="flex-shrink-0 px-5 py-5 border-b border-sand bg-white">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-xl bg-lilac-soft border-2 border-lilac/30 flex items-center justify-center">
+            <div className="w-10 h-10 rounded-xl bg-lilac-soft border border-lilac/30 flex items-center justify-center">
               <Code2 className="w-5 h-5 text-lilac" />
             </div>
             <div>
@@ -97,7 +97,7 @@ export function PromptPanel({ state }: Props) {
             className={`flex items-center gap-2.5 px-5 py-3 rounded-xl text-[15px] font-bold transition-all duration-200 ${
               copied
                 ? 'bg-emerald-100 text-emerald-700 border-2 border-emerald-300'
-                : 'bg-lilac text-white border-2 border-lilac hover:bg-lilac-dim shadow-md shadow-lilac/25'
+                : 'bg-lilac text-white border border-lilac hover:bg-lilac-dim shadow-md shadow-lilac/25'
             }`}
           >
             {copied ? <><Check className="w-4 h-4" /> Copied!</> : <><Copy className="w-4 h-4" /> Copy</>}
@@ -116,7 +116,7 @@ export function PromptPanel({ state }: Props) {
         <div className="p-5">
           {state.blocks.length === 0 ? (
             <div className="flex flex-col items-center justify-center py-24 text-center">
-              <div className="w-16 h-16 rounded-2xl bg-lilac-soft border-2 border-lilac/25 flex items-center justify-center mb-4">
+              <div className="w-16 h-16 rounded-2xl bg-lilac-soft border border-lilac/25 flex items-center justify-center mb-4">
                 <Code2 className="w-7 h-7 text-lilac" />
               </div>
               <p className="text-lg font-extrabold text-ink/40">No sections yet</p>
@@ -129,7 +129,7 @@ export function PromptPanel({ state }: Props) {
       </div>
 
       {/* Footer */}
-      <div className="flex-shrink-0 px-5 py-3 border-t-2 border-sand bg-white">
+      <div className="flex-shrink-0 px-5 py-3 border-t border-sand bg-white">
         <p className="text-[13px] font-bold text-mist text-center">
           Optimized for Google Stitch · Updates live as you type
         </p>
