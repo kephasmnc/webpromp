@@ -223,11 +223,23 @@ Gradient overlay: absolute inset-x-0 top-0 h-60 bg-gradient-to-b from-background
 
   let layoutSpec = ''
   if (d.layout === 'centered') {
-    layoutSpec = 'Layout: min-h-screen flex flex-col items-center justify-center text-center px-6'
+    layoutSpec = `LAYOUT — CENTERED (required):
+Outer wrapper: min-h-screen relative overflow-hidden flex flex-col items-center justify-center text-center px-6
+ALL text content must be centered horizontally (items-center + text-center)
+H1, subtitle, and CTA buttons must all be center-aligned
+Do NOT use justify-between or push content to bottom — content must be vertically centered`
   } else if (d.layout === 'bottom-left') {
-    layoutSpec = 'Layout: min-h-screen flex flex-col justify-between. Content pushed to bottom-left. px-6 md:px-10 pb-16'
+    layoutSpec = `LAYOUT — BOTTOM-LEFT (required):
+Outer wrapper: min-h-screen relative overflow-hidden flex flex-col justify-between px-6 md:px-10 pb-16
+All hero text content sits in the BOTTOM-LEFT corner
+Text is left-aligned (text-left, items-start)
+Top area is empty (spacer) — content only at the bottom`
   } else {
-    layoutSpec = 'Layout: min-h-screen flex flex-col justify-between. Content pushed to bottom-right. px-6 md:px-10 pb-16'
+    layoutSpec = `LAYOUT — BOTTOM-RIGHT (required):
+Outer wrapper: min-h-screen relative overflow-hidden flex flex-col justify-between px-6 md:px-10 pb-16
+All hero text content sits in the BOTTOM-RIGHT corner
+Text is right-aligned (text-right, items-end, ml-auto)
+Top area is empty (spacer) — content only at the bottom`
   }
 
   const h1 = `${d.headline1 || 'Your Headline'}\n${d.headline2 || 'Goes Here'}\n${d.headline3 || 'In Italic Serif'}`

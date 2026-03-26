@@ -3,6 +3,7 @@ import {
   Type, Palette, Sparkles, LayoutGrid, Sliders, Zap, ChevronDown
 } from 'lucide-react'
 import type { GlobalConfig, Preset, ButtonStyle, AnimationIntensity } from '../../types'
+import { TONE_COLOR_DEFAULTS } from '../../store/useStore'
 
 // ─── Layer 1: Tone (mutually exclusive — sets the background mood) ────────────
 const TONE_VIBES: { id: string; label: string; desc: string; bg: string; dot: string; activeBorder: string; activeText: string }[] = [
@@ -53,9 +54,10 @@ const STYLE_VIBES = [
 ]
 
 const PRESETS: { id: Preset; label: string; desc: string; colors: string[] }[] = [
-  { id: 'dark-minimal',    label: 'Dark Minimal',    desc: 'Pure black, Geist + Gilda Display',       colors: ['#000', '#fff', '#8ba8e0'] },
-  { id: 'liquid-glass',    label: 'Liquid Glass',    desc: 'Purple-black, glassmorphic, green accent', colors: ['#07030f', '#f0ede8', '#6dfc76'] },
-  { id: 'light-corporate', label: 'Light Corporate', desc: 'White bg, Instrument Serif + Inter',       colors: ['#fff', '#202a35', '#6366f1'] },
+  { id: 'none',            label: 'Nenhum / Custom',  desc: 'Usa somente Vibe + Cores manuais',        colors: [] },
+  { id: 'dark-minimal',    label: 'Dark Minimal',    desc: 'Pure black, Geist + Gilda Display',        colors: ['#000', '#fff', '#8ba8e0'] },
+  { id: 'liquid-glass',    label: 'Liquid Glass',    desc: 'Purple-black, glassmorphic, green accent',  colors: ['#07030f', '#f0ede8', '#6dfc76'] },
+  { id: 'light-corporate', label: 'Light Corporate', desc: 'White bg, Instrument Serif + Inter',        colors: ['#fff', '#202a35', '#6366f1'] },
 ]
 
 interface SectionProps {
@@ -98,7 +100,9 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
   const selectTone = (toneId: string) => {
     // Replace existing tone, keep all style vibes
     const styles = g.vibes.filter(v => STYLE_VIBES.includes(v))
-    updateGlobal({ vibes: [toneId, ...styles] })
+    // Auto-apply color defaults for this tone + clear any active preset
+    const toneDefaults = TONE_COLOR_DEFAULTS[toneId] ?? {}
+    updateGlobal({ vibes: [toneId, ...styles], preset: 'none', ...toneDefaults })
   }
 
   const toggleStyle = (style: string) => {

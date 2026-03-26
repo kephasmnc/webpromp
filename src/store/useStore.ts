@@ -6,8 +6,34 @@ import type {
   Preset
 } from '../types'
 
+// ─── Tone → Color Defaults ─────────────────────────────────────────────────────
+// Applied automatically when user picks a tone in Layer 1 Vibe
+export const TONE_COLOR_DEFAULTS: Record<string, Partial<GlobalConfig>> = {
+  dark: {
+    colors: { background: '0 0% 2%', foreground: '40 6% 95%', primary: '220 70% 78%', card: '0 0% 7%', muted: '0 0% 14%' },
+    displayFont: 'Gilda Display',
+    bodyFont: 'Geist',
+  },
+  light: {
+    colors: { background: '40 30% 97%', foreground: '20 10% 10%', primary: '239 60% 60%', card: '40 20% 93%', muted: '40 15% 88%' },
+    displayFont: 'Instrument Serif',
+    bodyFont: 'Inter',
+  },
+  colorful: {
+    colors: { background: '0 0% 5%', foreground: '0 0% 98%', primary: '291 90% 65%', card: '270 15% 10%', muted: '270 10% 18%' },
+    displayFont: 'Geist Sans',
+    bodyFont: 'Geist Sans',
+  },
+  charged: {
+    colors: { background: '38 18% 87%', foreground: '20 10% 10%', primary: '330 100% 58%', card: '38 14% 82%', muted: '38 10% 76%' },
+    displayFont: 'Gilda Display',
+    bodyFont: 'Geist',
+  },
+}
+
 // ─── Preset Configs ────────────────────────────────────────────────────────────
 const PRESETS: Record<Preset, Partial<GlobalConfig>> = {
+  'none': {},
   'dark-minimal': {
     displayFont: 'Gilda Display',
     bodyFont: 'Geist',
@@ -187,15 +213,15 @@ const initialState: AppState = {
     logoType: 'text',
     logoUrl: '',
     vibes: ['dark', 'premium'],
-    preset: 'dark-minimal',
+    preset: 'none',
     displayFont: 'Gilda Display',
     bodyFont: 'Geist',
     colors: {
-      background: '0 0% 0%',
-      foreground: '0 0% 100%',
+      background: '0 0% 2%',
+      foreground: '40 6% 95%',
       primary: '220 70% 78%',
-      card: '0 0% 6%',
-      muted: '0 0% 15%',
+      card: '0 0% 7%',
+      muted: '0 0% 14%',
     },
     buttonStyle: 'pill',
     animationIntensity: 'subtle',

@@ -11,7 +11,7 @@ export type BlockType =
   | 'cta'
   | 'footer'
 
-export type Preset = 'dark-minimal' | 'liquid-glass' | 'light-corporate'
+export type Preset = 'none' | 'dark-minimal' | 'liquid-glass' | 'light-corporate'
 export type ButtonStyle = 'sharp' | 'rounded' | 'pill'
 export type AnimationIntensity = 'none' | 'subtle' | 'dramatic'
 
