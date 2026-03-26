@@ -6,70 +6,27 @@ import type {
   Preset
 } from '../types'
 
-// ─── Tone → Color Defaults ─────────────────────────────────────────────────────
-// Applied automatically when user picks a tone in Layer 1 Vibe
-export const TONE_COLOR_DEFAULTS: Record<string, Partial<GlobalConfig>> = {
-  dark: {
-    colors: { background: '0 0% 2%', foreground: '40 6% 95%', primary: '220 70% 78%', card: '0 0% 7%', muted: '0 0% 14%' },
-    displayFont: 'Gilda Display',
-    bodyFont: 'Geist',
-  },
-  light: {
-    colors: { background: '40 30% 97%', foreground: '20 10% 10%', primary: '239 60% 60%', card: '40 20% 93%', muted: '40 15% 88%' },
-    displayFont: 'Instrument Serif',
-    bodyFont: 'Inter',
-  },
-  colorful: {
-    colors: { background: '0 0% 5%', foreground: '0 0% 98%', primary: '291 90% 65%', card: '270 15% 10%', muted: '270 10% 18%' },
-    displayFont: 'Geist Sans',
-    bodyFont: 'Geist Sans',
-  },
-  charged: {
-    colors: { background: '38 22% 86%', foreground: '20 12% 9%', primary: '330 100% 57%', card: '38 18% 80%', muted: '38 12% 73%' },
-    displayFont: 'Gilda Display',
-    bodyFont: 'Inter',
-  },
-}
-
 // ─── Preset Configs ────────────────────────────────────────────────────────────
 const PRESETS: Record<Preset, Partial<GlobalConfig>> = {
   'none': {},
   'dark-minimal': {
     displayFont: 'Gilda Display',
     bodyFont: 'Geist',
-    colors: {
-      background: '0 0% 0%',
-      foreground: '0 0% 100%',
-      primary: '220 70% 78%',
-      card: '0 0% 6%',
-      muted: '0 0% 15%',
-    },
+    colors: { background: '#050505', foreground: '#F2EEE5', primary: '#8BAAE0', card: '#111111', muted: '#252525' },
     buttonStyle: 'pill',
     animationIntensity: 'subtle',
   },
   'liquid-glass': {
-    displayFont: 'Geist Sans',
-    bodyFont: 'Geist Sans',
-    colors: {
-      background: '260 87% 3%',
-      foreground: '40 6% 95%',
-      primary: '121 95% 76%',
-      card: '240 6% 9%',
-      muted: '240 4% 16%',
-    },
+    displayFont: 'Geist',
+    bodyFont: 'Geist',
+    colors: { background: '#07030F', foreground: '#F0EDE8', primary: '#6DFC76', card: '#12101A', muted: '#1E1B2A' },
     buttonStyle: 'pill',
     animationIntensity: 'subtle',
   },
   'light-corporate': {
     displayFont: 'Instrument Serif',
     bodyFont: 'Inter',
-    colors: {
-      background: '0 0% 100%',
-      foreground: '210 14% 17%',
-      primary: '239 84% 67%',
-      card: '0 0% 96%',
-      muted: '0 0% 96%',
-    },
+    colors: { background: '#FFFFFF', foreground: '#202A35', primary: '#6366F1', card: '#F5F5F5', muted: '#E8E8E8' },
     buttonStyle: 'pill',
     animationIntensity: 'subtle',
   },
@@ -216,15 +173,10 @@ const initialState: AppState = {
     preset: 'none',
     displayFont: 'Gilda Display',
     bodyFont: 'Geist',
-    colors: {
-      background: '0 0% 2%',
-      foreground: '40 6% 95%',
-      primary: '220 70% 78%',
-      card: '0 0% 7%',
-      muted: '0 0% 14%',
-    },
+    colors: { background: '#050505', foreground: '#F2EEE5', primary: '#8BAAE0', card: '#111111', muted: '#252525' },
     buttonStyle: 'pill',
     animationIntensity: 'subtle',
+    layoutStyle: 'classic',
   },
   blocks: [
     { id: '1', type: 'navbar',   enabled: true, data: createBlockData('navbar') },

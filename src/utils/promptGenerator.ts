@@ -61,7 +61,7 @@ function getPillBadgeStyle(preset: string): string {
 }
 
 function getSignatureGradient(primary: string): string {
-  return `bg-gradient-to-r from-[hsl(${primary})] to-[hsl(40,80%,82%)]`
+  return `bg-gradient-to-r from-[${primary}] to-[color-mix(in_srgb,${primary}_60%,#f0d090)]`
 }
 
 // ─── Stack Builder ─────────────────────────────────────────────────────────────
@@ -94,19 +94,18 @@ function buildFonts(g: AppState['global']): string {
 // ─── Design System ─────────────────────────────────────────────────────────────
 function buildDesignSystem(g: AppState['global']): string {
   const r = getBorderRadius(g.buttonStyle)
-  const gradient = getSignatureGradient(g.colors.primary)
   const lines = [
-    `Design System (CSS variables in :root, all HSL):`,
+    `Design System (CSS variables in :root — hex values):`,
     `--background: ${g.colors.background}`,
     `--foreground: ${g.colors.foreground}`,
+    `--primary: ${g.colors.primary}`,
     `--card: ${g.colors.card}`,
     `--muted: ${g.colors.muted}`,
-    `--muted-foreground: (auto-derived ~60% opacity of foreground)`,
-    `--border: (auto-derived ~20% opacity of foreground)`,
+    `--border: color-mix(in srgb, var(--foreground) 12%, transparent)`,
     `--radius: ${r}`,
     ``,
-    `Signature gradient accent: ${gradient}`,
-    `Used on all CTA buttons and highlighted elements.`,
+    `Primary/Accent color: ${g.colors.primary}`,
+    `Use on: CTA buttons, links, highlights, decorative accents, hover states`,
   ]
   if (g.preset === 'liquid-glass') {
     lines.push(``, `Liquid Glass utility class (.liquid-glass):`)
@@ -124,10 +123,10 @@ const TONE_IDS = ['dark', 'light', 'colorful', 'charged']
 const STYLE_IDS = ['minimal', 'premium', 'elegant', 'bold', 'playful', 'modern', 'corporate', 'futuristic', 'glassmorphic', 'editorial']
 
 const TONE_DESIGN_LANGUAGE: Record<string, string> = {
-  dark:     'Background: deep black or near-black (#000–#0d0d0f). Foreground: off-white (#f0ede8 or similar). All surfaces remain dark — no light panels or cards. Borders: low opacity (foreground/[0.06]–[0.10]). Text on dark: near-white at full weight.',
-  light:    'Background: warm white or off-white (#FAFAF7–#F5F2EB). Foreground: rich near-black (#1A1816). Surfaces: cream/parchment cards with subtle sand borders. Avoid pure #FFF — keep warmth. Light sections feel airy and editorial.',
-  colorful: 'High-saturation accent palette. Background can be white or very dark, but accent colors are vivid: saturated purples, pinks, oranges, or greens. Strong contrast between bg and elements. Color is the hero — use it boldly on headings, buttons, and icons.',
-  charged:  'Background: warm neutral — sand, stone, or linen (#E8E4DC–#EDE9E0). ONE ultra-saturated "electric" accent color dominates: hot pink (#FF2D87), electric blue (#0066FF), acid green (#00FF87), or similar. Use the accent aggressively on headlines, CTAs, and decorative elements. Everything else stays neutral and restrained to let the accent pop.',
+  dark:     'Dark aesthetic: ALL backgrounds and surfaces use the Background color (dark). No light panels, no white cards. Borders are very low-opacity. Depth is created through subtle surface variations, not by introducing light elements.',
+  light:    'Light aesthetic: warm, airy atmosphere using the Background color. Cards and surfaces are slightly off-white/warm. Sections breathe — generous whitespace. Avoid stark white contrasts; keep the warmth of the palette.',
+  colorful: 'Colorful aesthetic: use the Primary/Accent color boldly and frequently. Apply it on section backgrounds, large headings, icon fills, and hover states. Color is the dominant visual element — let it saturate the page.',
+  charged:  'Charged aesthetic: the Background is neutral and restrained. The Primary/Accent color is ELECTRIC and dominant — use it AGGRESSIVELY on large headlines, CTA buttons, underlines, borders, and decorative shapes. Everything except the accent stays muted. The dramatic tension between neutral and vivid IS the design. Do not use the accent sparingly.',
 }
 
 const STYLE_DESIGN_LANGUAGE: Record<string, string> = {
@@ -143,6 +142,14 @@ const STYLE_DESIGN_LANGUAGE: Record<string, string> = {
   editorial:   'Magazine-style layouts. Dramatic typographic scale — some headings at 96px+. Text used as graphic element. Asymmetric column grids. Pull quotes styled as visual anchors. Feels like a premium print publication translated to web.',
 }
 
+// ─── Layout Style Language ────────────────────────────────────────────────────
+const LAYOUT_STYLE_LANGUAGE: Record<string, string> = {
+  classic:    'Use proven web conventions: clean CSS grid, clear visual hierarchy, centered or symmetrical section compositions. Each section has a clear heading, body, and optional CTA. Layouts feel familiar and navigable.',
+  asymmetric: 'Break the grid intentionally: uneven column splits (e.g. 40/60, 30/70), staggered elements, overlapping layers, varied section rhythms (some wide, some narrow). Avoid mirror-image symmetry. Every section should have a different compositional logic.',
+  editorial:  'Treat typography as a graphic element. Use dramatic font size contrasts (hero at 96–120px, captions at 11px). Text can overlap images. Pull quotes span multiple columns. Section intros use large decorative numerals or letters. Think high-end magazine.',
+  immersive:  'Full-bleed everything. No card borders — surfaces blend into each other. Background media (video/image) dominates. Overlays use gradients not opaque panels. Content floats over backgrounds. Minimal chrome — no visible page containers or boxes.',
+}
+
 // ─── Global Patterns ──────────────────────────────────────────────────────────
 function buildGlobalPatterns(g: AppState['global']): string {
   const animConfig = getAnimConfig(g.animationIntensity)
@@ -153,7 +160,6 @@ function buildGlobalPatterns(g: AppState['global']): string {
 
   const vibes = g.vibes.length > 0 ? g.vibes : ['dark', 'premium']
 
-  // Separate tone from personality styles
   const tone = vibes.find(v => TONE_IDS.includes(v)) ?? 'dark'
   const styles = vibes.filter(v => STYLE_IDS.includes(v))
 
@@ -161,7 +167,6 @@ function buildGlobalPatterns(g: AppState['global']): string {
   const stylesLabel = styles.length > 0 ? styles.map(s => s.toUpperCase()).join(' + ') : ''
   const vibeLabel = stylesLabel ? `${toneLabel} · ${stylesLabel}` : toneLabel
 
-  // Build layered design directive
   const toneDesc = TONE_DESIGN_LANGUAGE[tone] ?? ''
   const styleDescs = styles
     .filter(s => STYLE_DESIGN_LANGUAGE[s])
@@ -173,8 +178,14 @@ function buildGlobalPatterns(g: AppState['global']): string {
     styleDescs,
   ].filter(Boolean).join('\n')
 
+  const layoutStyle = g.layoutStyle ?? 'classic'
+  const layoutDesc = LAYOUT_STYLE_LANGUAGE[layoutStyle] ?? ''
+
   return `Global visual direction — ${vibeLabel}:
 ${vibeSection}
+
+Composition style — ${layoutStyle.toUpperCase()}:
+${layoutDesc}
 
 Section tags: ${sectionTagStyle}
 Pill badges: ${pillBadge}
@@ -224,22 +235,54 @@ Gradient overlay: absolute inset-x-0 top-0 h-60 bg-gradient-to-b from-background
   let layoutSpec = ''
   if (d.layout === 'centered') {
     layoutSpec = `LAYOUT — CENTERED (required):
-Outer wrapper: min-h-screen relative overflow-hidden flex flex-col items-center justify-center text-center px-6
-ALL text content must be centered horizontally (items-center + text-center)
-H1, subtitle, and CTA buttons must all be center-aligned
-Do NOT use justify-between or push content to bottom — content must be vertically centered`
+Outer: min-h-screen flex flex-col items-center justify-center text-center px-6
+All content center-aligned. H1, subtitle, CTAs all centered.
+Do NOT push content to bottom.`
   } else if (d.layout === 'bottom-left') {
-    layoutSpec = `LAYOUT — BOTTOM-LEFT (required):
-Outer wrapper: min-h-screen relative overflow-hidden flex flex-col justify-between px-6 md:px-10 pb-16
-All hero text content sits in the BOTTOM-LEFT corner
-Text is left-aligned (text-left, items-start)
-Top area is empty (spacer) — content only at the bottom`
-  } else {
+    layoutSpec = `LAYOUT — BOTTOM-LEFT CINEMATIC (required):
+Outer: min-h-screen flex flex-col justify-between px-6 md:px-12 pb-16 pt-0
+Top: empty spacer (navbar floats over)
+Bottom: all content anchored bottom-left, text-left, items-start
+Background media fills full viewport.`
+  } else if (d.layout === 'bottom-right') {
     layoutSpec = `LAYOUT — BOTTOM-RIGHT (required):
-Outer wrapper: min-h-screen relative overflow-hidden flex flex-col justify-between px-6 md:px-10 pb-16
-All hero text content sits in the BOTTOM-RIGHT corner
-Text is right-aligned (text-right, items-end, ml-auto)
-Top area is empty (spacer) — content only at the bottom`
+Outer: min-h-screen flex flex-col justify-between px-6 md:px-12 pb-16
+Top: empty spacer
+Bottom: content ml-auto, text-right, items-end — anchored to bottom-right corner`
+  } else if (d.layout === 'split-left') {
+    layoutSpec = `LAYOUT — SPLIT SCREEN, text left (required):
+Outer: min-h-screen grid grid-cols-2 (no gap)
+Left col (col-span-1): flex flex-col justify-center px-12 py-24 — all text content (tag, H1, subtitle, CTAs)
+Right col (col-span-1): relative overflow-hidden — background media fills the entire right half (object-cover)
+Left side uses solid background color; right side is pure media.
+On mobile: stacks vertically, media on top, text below.`
+  } else if (d.layout === 'split-right') {
+    layoutSpec = `LAYOUT — SPLIT SCREEN, text right (required):
+Outer: min-h-screen grid grid-cols-2 (no gap)
+Left col (col-span-1): relative overflow-hidden — background media fills entire left half (object-cover)
+Right col (col-span-1): flex flex-col justify-center px-12 py-24 — all text content
+Right side uses solid background; left side is pure media.
+On mobile: stacks vertically, media on top, text below.`
+  } else if (d.layout === 'editorial') {
+    layoutSpec = `LAYOUT — EDITORIAL TYPOGRAPHIC (required):
+Outer: min-h-screen relative overflow-hidden px-6 md:px-12 py-24 flex flex-col justify-end
+H1 is MASSIVE — font-size clamp(4rem, 10vw, 9rem), tracking -0.05em, leading-[0.85]
+Lines of H1 are STAGGERED: line 1 at x=0, line 2 indented ml-[15%], line 3 at x=0 or right-aligned
+Subtitle and CTAs sit at bottom-left in a narrow column (max-w-sm)
+Background media or color wash behind — content feels printed over it
+Decorative: thin horizontal rule between headline block and bottom content`
+  } else if (d.layout === 'fulltype') {
+    layoutSpec = `LAYOUT — FULL TYPOGRAPHY (required):
+Outer: min-h-screen flex flex-col justify-center px-6 md:px-12 bg-background (no background media)
+H1 fills most of the viewport width — font-size clamp(5rem, 12vw, 11rem), tracking -0.06em
+Lines alternate between font-light and font-display italic to create rhythmic contrast
+Accent: some words in H1 use the Primary color or have an outlined/stroke style (text-stroke)
+Small descriptor text floats in the negative space — positioned absolute top-right or bottom-right
+Minimal, typographic, bold — no media, pure type composition`
+  } else {
+    layoutSpec = `LAYOUT — BOTTOM-LEFT CINEMATIC (required):
+Outer: min-h-screen flex flex-col justify-between px-6 md:px-12 pb-16
+Bottom: all content anchored bottom-left, text-left`
   }
 
   const h1 = `${d.headline1 || 'Your Headline'}\n${d.headline2 || 'Goes Here'}\n${d.headline3 || 'In Italic Serif'}`

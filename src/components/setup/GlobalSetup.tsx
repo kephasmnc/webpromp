@@ -1,9 +1,8 @@
 import { useState } from 'react'
 import {
-  Palette, Sparkles, LayoutGrid, Sliders, Zap, ChevronDown, Type
+  Palette, Sparkles, LayoutGrid, Sliders, Zap, ChevronDown, Type, Layers
 } from 'lucide-react'
-import type { GlobalConfig, Preset, ButtonStyle, AnimationIntensity } from '../../types'
-import { TONE_COLOR_DEFAULTS } from '../../store/useStore'
+import type { GlobalConfig, Preset, ButtonStyle, AnimationIntensity, LayoutStyle } from '../../types'
 import { FontPicker } from './FontPicker'
 
 // ─── Layer 1: Tone (mutually exclusive — sets the background mood) ────────────
@@ -99,11 +98,9 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
   const currentStyles = g.vibes.filter(v => STYLE_VIBES.includes(v))
 
   const selectTone = (toneId: string) => {
-    // Replace existing tone, keep all style vibes
+    // Only update vibes — colors are controlled by the Colors section
     const styles = g.vibes.filter(v => STYLE_VIBES.includes(v))
-    // Auto-apply color defaults for this tone + clear any active preset
-    const toneDefaults = TONE_COLOR_DEFAULTS[toneId] ?? {}
-    updateGlobal({ vibes: [toneId, ...styles], preset: 'none', ...toneDefaults })
+    updateGlobal({ vibes: [toneId, ...styles] })
   }
 
   const toggleStyle = (style: string) => {
@@ -288,21 +285,74 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
 
       {/* Colors */}
       <CollapsibleSection title="Colors" icon={<Palette className="w-4.5 h-4.5" />} defaultOpen={false}>
-        <p className="text-[14px] text-mist font-semibold">HSL values — e.g. <code className="text-lilac font-mono font-bold">220 70% 78%</code></p>
+        <p className="text-[13px] text-mist font-semibold">Cores em hex. Estas têm prioridade sobre o tom do Vibe.</p>
         <div className="space-y-3">
-          {colorTokens.map(({ key, label }) => (
-            <div key={key} className="flex items-center gap-3">
-              <div className="color-swatch shadow-sm" style={{ background: `hsl(${g.colors[key]})` }} />
-              <div className="flex-1">
-                <label className="label-base">{label}</label>
-                <input
-                  className="input-base font-mono"
-                  placeholder="0 0% 100%"
-                  value={g.colors[key]}
-                  onChange={e => updateGlobal({ colors: { ...g.colors, [key]: e.target.value } })}
-                />
+          {colorTokens.map(({ key, label }) => {
+            const val = g.colors[key]
+            const isValidHex = /^#[0-9A-Fa-f]{6}$/.test(val)
+            return (
+              <div key={key} className="flex items-center gap-3">
+                {/* Native color picker */}
+                <label className="relative flex-shrink-0 cursor-pointer">
+                  <input
+                    type="color"
+                    value={isValidHex ? val : '#888888'}
+                    onChange={e => updateGlobal({ colors: { ...g.colors, [key]: e.target.value } })}
+                    className="sr-only"
+                  />
+                  <div
+                    className="w-10 h-10 rounded-xl border-2 border-sand shadow-sm hover:border-lilac/40 transition-colors"
+                    style={{ background: isValidHex ? val : '#888888' }}
+                  />
+                </label>
+                {/* Hex text input */}
+                <div className="flex-1">
+                  <label className="label-base">{label}</label>
+                  <input
+                    className="input-base font-mono text-[13px]"
+                    placeholder="#FFFFFF"
+                    value={val}
+                    maxLength={7}
+                    onChange={e => {
+                      const v = e.target.value
+                      if (/^#?[0-9A-Fa-f]{0,6}$/.test(v)) {
+                        updateGlobal({ colors: { ...g.colors, [key]: v.startsWith('#') ? v : `#${v}` } })
+                      }
+                    }}
+                  />
+                </div>
               </div>
-            </div>
+            )
+          })}
+        </div>
+      </CollapsibleSection>
+
+      {/* Layout Style */}
+      <CollapsibleSection title="Composição" icon={<Layers className="w-4.5 h-4.5" />} defaultOpen={false}>
+        <p className="text-[13px] text-mist font-semibold">Define a linguagem compositiva de todos os layouts.</p>
+        <div className="space-y-2.5">
+          {([
+            { id: 'classic',    label: 'Classic',      desc: 'Padrões web comprovados — grid limpo, hierarquia clara' },
+            { id: 'asymmetric', label: 'Asymmetric',   desc: 'Ritmo quebrado, columns desiguais, sobreposições' },
+            { id: 'editorial',  label: 'Editorial',    desc: 'Tipografia como elemento gráfico, estilo magazine' },
+            { id: 'immersive',  label: 'Immersive',    desc: 'Full-bleed, cinematográfico, sem molduras visíveis' },
+          ] as { id: LayoutStyle; label: string; desc: string }[]).map(opt => (
+            <button
+              key={opt.id}
+              onClick={() => updateGlobal({ layoutStyle: opt.id })}
+              className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl border text-left transition-all duration-150 ${
+                g.layoutStyle === opt.id
+                  ? 'border-lilac/60 bg-lilac-soft'
+                  : 'border-sand bg-white hover:border-lilac/25 hover:bg-beige/40'
+              }`}
+            >
+              <span className={`text-[15px] font-bold ${g.layoutStyle === opt.id ? 'text-lilac' : 'text-ink'}`}>
+                {opt.label}
+              </span>
+              <span className={`text-[13px] font-semibold text-right max-w-[55%] ${g.layoutStyle === opt.id ? 'text-lilac/80' : 'text-mist'}`}>
+                {opt.desc}
+              </span>
+            </button>
           ))}
         </div>
       </CollapsibleSection>

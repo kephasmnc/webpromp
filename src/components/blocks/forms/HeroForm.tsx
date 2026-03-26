@@ -1,4 +1,5 @@
 import type { HeroData } from '../../../types'
+// HeroData imported for layout type narrowing
 
 interface Props {
   data: HeroData
@@ -80,18 +81,27 @@ export function HeroForm({ data, onUpdate }: Props) {
 
       <div>
         <label className="label-base">Layout</label>
-        <div className="flex gap-2">
-          {(['centered', 'bottom-left', 'bottom-right'] as const).map(l => (
+        <div className="grid grid-cols-2 gap-2">
+          {([
+            { id: 'centered',    label: 'Centered',      desc: 'Conteúdo centralizado verticalmente' },
+            { id: 'bottom-left', label: 'Bottom Left',   desc: 'Texto no canto inferior esquerdo' },
+            { id: 'bottom-right',label: 'Bottom Right',  desc: 'Texto no canto inferior direito' },
+            { id: 'split-left',  label: 'Split ←',       desc: 'Texto esq, mídia dir (50/50)' },
+            { id: 'split-right', label: 'Split →',       desc: 'Mídia esq, texto dir (50/50)' },
+            { id: 'editorial',   label: 'Editorial',     desc: 'Headline gigante, staggered, tipográfico' },
+            { id: 'fulltype',    label: 'Full Type',     desc: 'Só tipografia, sem mídia, maximalista' },
+          ] as { id: string; label: string; desc: string }[]).map(l => (
             <button
-              key={l}
-              onClick={() => onUpdate({ layout: l })}
-              className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
-                data.layout === l
+              key={l.id}
+              onClick={() => onUpdate({ layout: l.id as HeroData['layout'] })}
+              className={`flex flex-col items-start px-3 py-2.5 rounded-xl border text-left transition-all ${
+                data.layout === l.id
                   ? 'border-lilac/50 bg-lilac-soft text-lilac'
-                  : 'border-sand text-mist hover:border-slate-600'
+                  : 'border-sand text-mist hover:border-lilac/30 hover:bg-beige/30'
               }`}
             >
-              {l === 'centered' ? 'Centered' : l === 'bottom-left' ? 'Bot. Left' : 'Bot. Right'}
+              <span className={`text-[13px] font-extrabold ${data.layout === l.id ? 'text-lilac' : 'text-ink'}`}>{l.label}</span>
+              <span className="text-[11px] font-semibold text-mist/80 mt-0.5 leading-tight">{l.desc}</span>
             </button>
           ))}
         </div>

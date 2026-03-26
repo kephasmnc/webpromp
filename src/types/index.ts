@@ -23,6 +23,8 @@ export interface ColorPalette {
   muted: string
 }
 
+export type LayoutStyle = 'classic' | 'asymmetric' | 'editorial' | 'immersive'
+
 export interface GlobalConfig {
   brandName: string
   tagline: string
@@ -35,6 +37,7 @@ export interface GlobalConfig {
   colors: ColorPalette
   buttonStyle: ButtonStyle
   animationIntensity: AnimationIntensity
+  layoutStyle: LayoutStyle
 }
 
 // ─── Block Data Types ─────────────────────────────────────────────────────────
@@ -58,7 +61,7 @@ export interface HeroData {
   ctaSecondary: string
   bgType: 'none' | 'image' | 'video'
   bgUrl: string
-  layout: 'centered' | 'bottom-left' | 'bottom-right'
+  layout: 'centered' | 'bottom-left' | 'bottom-right' | 'split-left' | 'split-right' | 'editorial' | 'fulltype'
   showMarquee: boolean
   marqueeItems: string
 }
