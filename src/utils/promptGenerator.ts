@@ -119,19 +119,28 @@ function buildDesignSystem(g: AppState['global']): string {
 }
 
 // ─── Vibe → Design Language ────────────────────────────────────────────────────
-const VIBE_DESIGN_LANGUAGE: Record<string, string> = {
-  dark:        'Deep black/near-black backgrounds (#000–#0d0d0f), off-white foreground (#f0ede8). All surfaces stay dark — no light panels. Low-opacity borders (foreground/[0.06]–[0.10]).',
-  premium:     'Restrained, refined palette. Generous whitespace (py-24 md:py-36 between sections). Single precise accent color. No visual clutter — every element earns its place.',
-  minimal:     'Maximum negative space. Sparse layouts with almost no decoration. Typography carries all hierarchy. Grid-breaking asymmetry through restraint, not noise.',
-  vibrant:     'High-saturation accent colors, strong contrast between bg and foreground. Energetic palette with color pops. Avoid washed-out tones — make every color count.',
-  elegant:     'Serif or transitional display font for headings. Graceful letter-spacing (-0.03em to -0.05em). Soft drop shadows. Refined proportions — nothing feels rushed or blocky.',
-  bold:        'Heavy typography: font-weight 800–900 for headings, dramatic scale contrast (hero h1 80–100px vs body 16px). Vivid accent color used with confidence. Strong visual hierarchy.',
-  playful:     'Rounded shapes (border-radius 1rem–1.5rem on cards and buttons). Bright, cheerful accent. Friendly rounded sans-serif. Subtle tilt or overlap on decorative elements.',
-  modern:      'Clean geometric layouts. Contemporary sans-serif at all weights. Precise CSS grid. Minimal decoration — only purposeful visual elements remain.',
-  corporate:   'Professional blues and cool neutrals. Structured, symmetrical layouts. Trust signals (stats, certifications, logos) prominently placed. Formal but approachable tone.',
-  futuristic:  'Monospace or geometric type for labels/tags. Electric or neon accent on dark background. Scanline or subtle grid texture. Technical, precise aesthetic — like a dashboard.',
-  glassmorphic:'Frosted glass cards: backdrop-filter blur(8px–16px), rgba(255,255,255,0.04) bg, gradient-mask border via ::before pseudo. Layered depth through transparency.',
-  editorial:   'Magazine-style layouts. Dramatic typographic scale — some headings at 96px+. Text used as graphic element. Asymmetric column grids. Pull quotes styled as visual anchors.',
+
+const TONE_IDS = ['dark', 'light', 'colorful', 'charged']
+const STYLE_IDS = ['minimal', 'premium', 'elegant', 'bold', 'playful', 'modern', 'corporate', 'futuristic', 'glassmorphic', 'editorial']
+
+const TONE_DESIGN_LANGUAGE: Record<string, string> = {
+  dark:     'Background: deep black or near-black (#000–#0d0d0f). Foreground: off-white (#f0ede8 or similar). All surfaces remain dark — no light panels or cards. Borders: low opacity (foreground/[0.06]–[0.10]). Text on dark: near-white at full weight.',
+  light:    'Background: warm white or off-white (#FAFAF7–#F5F2EB). Foreground: rich near-black (#1A1816). Surfaces: cream/parchment cards with subtle sand borders. Avoid pure #FFF — keep warmth. Light sections feel airy and editorial.',
+  colorful: 'High-saturation accent palette. Background can be white or very dark, but accent colors are vivid: saturated purples, pinks, oranges, or greens. Strong contrast between bg and elements. Color is the hero — use it boldly on headings, buttons, and icons.',
+  charged:  'Background: warm neutral — sand, stone, or linen (#E8E4DC–#EDE9E0). ONE ultra-saturated "electric" accent color dominates: hot pink (#FF2D87), electric blue (#0066FF), acid green (#00FF87), or similar. Use the accent aggressively on headlines, CTAs, and decorative elements. Everything else stays neutral and restrained to let the accent pop.',
+}
+
+const STYLE_DESIGN_LANGUAGE: Record<string, string> = {
+  minimal:     'Maximum negative space. Sparse layouts — very few decorative elements. Typography carries all hierarchy. Grid-breaking asymmetry through restraint, not noise. Section padding: py-28 md:py-40.',
+  premium:     'Restrained, refined execution. Generous whitespace (py-24 md:py-36 between sections). Single precise accent. No visual clutter — every element earns its place. Micro-details matter: precise shadows, careful letter-spacing.',
+  elegant:     'Serif or transitional display font for headings. Graceful letter-spacing (-0.03em to -0.05em). Soft, diffused drop shadows. Refined proportions — nothing feels rushed. Italic accent lines for visual poetry.',
+  bold:        'Heavy typography: font-weight 800–900 for ALL major headings. Dramatic scale contrast (hero h1: 72–100px vs body: 16px). Accent color used with full confidence. Strong visual hierarchy — the layout should feel powerful.',
+  playful:     'Rounded shapes: border-radius 1rem–1.5rem on cards and buttons. Bright, cheerful accent color. Friendly rounded sans-serif throughout. Subtle tilts (-rotate-1 to rotate-2) or overlaps on decorative elements.',
+  modern:      'Clean geometric layouts. Contemporary sans-serif at all weights. Precise CSS grid with deliberate column gaps. Minimal decoration — only purposeful visual elements remain. Feels designed, not decorated.',
+  corporate:   'Professional palette: blues, cool grays, trustworthy neutrals. Structured, symmetrical layouts. Trust signals prominently placed (stats, logos, certifications). Formal but approachable — confident without being aggressive.',
+  futuristic:  'Monospace or geometric type for labels, tags, and metadata. Electric or neon accent (works especially well on dark tone). Subtle grid texture or scanline overlay for atmosphere. Technical, dashboard-like aesthetic.',
+  glassmorphic:'Frosted glass cards: backdrop-filter blur(8px–16px), rgba(255,255,255,0.04) background, gradient-mask border via ::before pseudo-element (-webkit-mask: exclude). Layered depth through layered transparencies.',
+  editorial:   'Magazine-style layouts. Dramatic typographic scale — some headings at 96px+. Text used as graphic element. Asymmetric column grids. Pull quotes styled as visual anchors. Feels like a premium print publication translated to web.',
 }
 
 // ─── Global Patterns ──────────────────────────────────────────────────────────
@@ -142,17 +151,30 @@ function buildGlobalPatterns(g: AppState['global']): string {
   const sectionTagStyle = getSectionTagStyle(g.preset)
   const pillBadge = getPillBadgeStyle(g.preset)
 
-  const vibes = g.vibes.length > 0 ? g.vibes : ['premium']
-  const vibeLabel = vibes.join(' + ')
+  const vibes = g.vibes.length > 0 ? g.vibes : ['dark', 'premium']
 
-  // Build rich per-vibe design descriptions
-  const vibeDescriptions = vibes
-    .filter(v => VIBE_DESIGN_LANGUAGE[v])
-    .map(v => `[${v.toUpperCase()}] ${VIBE_DESIGN_LANGUAGE[v]}`)
+  // Separate tone from personality styles
+  const tone = vibes.find(v => TONE_IDS.includes(v)) ?? 'dark'
+  const styles = vibes.filter(v => STYLE_IDS.includes(v))
+
+  const toneLabel = tone.toUpperCase()
+  const stylesLabel = styles.length > 0 ? styles.map(s => s.toUpperCase()).join(' + ') : ''
+  const vibeLabel = stylesLabel ? `${toneLabel} · ${stylesLabel}` : toneLabel
+
+  // Build layered design directive
+  const toneDesc = TONE_DESIGN_LANGUAGE[tone] ?? ''
+  const styleDescs = styles
+    .filter(s => STYLE_DESIGN_LANGUAGE[s])
+    .map(s => `[${s.toUpperCase()}] ${STYLE_DESIGN_LANGUAGE[s]}`)
     .join('\n')
 
+  const vibeSection = [
+    `[TONE: ${toneLabel}] ${toneDesc}`,
+    styleDescs,
+  ].filter(Boolean).join('\n')
+
   return `Global visual direction — ${vibeLabel}:
-${vibeDescriptions}
+${vibeSection}
 
 Section tags: ${sectionTagStyle}
 Pill badges: ${pillBadge}

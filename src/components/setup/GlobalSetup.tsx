@@ -4,7 +4,53 @@ import {
 } from 'lucide-react'
 import type { GlobalConfig, Preset, ButtonStyle, AnimationIntensity } from '../../types'
 
-const VIBES = ['dark', 'premium', 'minimal', 'vibrant', 'elegant', 'bold', 'playful', 'modern', 'corporate', 'futuristic', 'glassmorphic', 'editorial']
+// ─── Layer 1: Tone (mutually exclusive — sets the background mood) ────────────
+const TONE_VIBES: { id: string; label: string; desc: string; bg: string; dot: string; activeBorder: string; activeText: string }[] = [
+  {
+    id: 'dark',
+    label: 'Dark',
+    desc: 'Black / near-black',
+    bg: 'bg-[#111010]',
+    dot: 'bg-white',
+    activeBorder: 'border-zinc-600',
+    activeText: 'text-zinc-200',
+  },
+  {
+    id: 'light',
+    label: 'Light',
+    desc: 'White / warm cream',
+    bg: 'bg-[#F5F2EB]',
+    dot: 'bg-[#1a1816]',
+    activeBorder: 'border-amber-400',
+    activeText: 'text-amber-700',
+  },
+  {
+    id: 'colorful',
+    label: 'Colorful',
+    desc: 'Saturated palette',
+    bg: 'bg-gradient-to-br from-violet-400 via-pink-400 to-orange-400',
+    dot: 'bg-white',
+    activeBorder: 'border-violet-500',
+    activeText: 'text-violet-700',
+  },
+  {
+    id: 'charged',
+    label: 'Charged',
+    desc: 'Neutral + electric accent',
+    bg: 'bg-[#E8E4DC]',
+    dot: 'bg-[#FF2D87]',
+    activeBorder: 'border-pink-400',
+    activeText: 'text-pink-700',
+  },
+]
+
+const TONE_IDS = TONE_VIBES.map(t => t.id)
+
+// ─── Layer 2: Personality (up to 2, stack with tone) ─────────────────────────
+const STYLE_VIBES = [
+  'minimal', 'premium', 'elegant', 'bold', 'playful',
+  'modern', 'corporate', 'futuristic', 'glassmorphic', 'editorial',
+]
 
 const PRESETS: { id: Preset; label: string; desc: string; colors: string[] }[] = [
   { id: 'dark-minimal',    label: 'Dark Minimal',    desc: 'Pure black, Geist + Gilda Display',       colors: ['#000', '#fff', '#8ba8e0'] },
@@ -45,12 +91,29 @@ interface Props {
 }
 
 export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
-  const toggleVibe = (vibe: string) => {
-    const current = g.vibes
-    if (current.includes(vibe)) {
-      if (current.length > 1) updateGlobal({ vibes: current.filter(v => v !== vibe) })
-    } else if (current.length < 4) {
-      updateGlobal({ vibes: [...current, vibe] })
+  // Derive current tone and styles from the flat vibes array
+  const currentTone = g.vibes.find(v => TONE_IDS.includes(v)) ?? 'dark'
+  const currentStyles = g.vibes.filter(v => STYLE_VIBES.includes(v))
+
+  const selectTone = (toneId: string) => {
+    // Replace existing tone, keep all style vibes
+    const styles = g.vibes.filter(v => STYLE_VIBES.includes(v))
+    updateGlobal({ vibes: [toneId, ...styles] })
+  }
+
+  const toggleStyle = (style: string) => {
+    const styles = g.vibes.filter(v => STYLE_VIBES.includes(v))
+    const tone = g.vibes.find(v => TONE_IDS.includes(v)) ?? 'dark'
+
+    if (styles.includes(style)) {
+      // Remove it
+      updateGlobal({ vibes: [tone, ...styles.filter(s => s !== style)] })
+    } else if (styles.length >= 2) {
+      // Swap oldest (first) out, add new at end
+      updateGlobal({ vibes: [tone, styles[1], style] })
+    } else {
+      // Add it
+      updateGlobal({ vibes: [tone, ...styles, style] })
     }
   }
 
@@ -93,19 +156,84 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
         </div>
       </CollapsibleSection>
 
-      {/* Vibe Adjectives */}
+      {/* Vibe — 2-layer system */}
       <CollapsibleSection title="Vibe" icon={<Sparkles className="w-4.5 h-4.5" />}>
-        <p className="text-[14px] text-mist font-semibold">Select 2–4 adjectives that define the feel</p>
-        <div className="flex flex-wrap gap-2">
-          {VIBES.map(v => (
-            <button
-              key={v}
-              onClick={() => toggleVibe(v)}
-              className={`vibe-tag ${g.vibes.includes(v) ? 'active' : 'inactive'}`}
-            >
-              {v}
-            </button>
-          ))}
+
+        {/* Layer 1: Tone */}
+        <div>
+          <p className="text-[12px] font-extrabold uppercase tracking-[0.12em] text-mist mb-3">
+            Layer 1 — Background Tone <span className="text-sand ml-1">pick one</span>
+          </p>
+          <div className="grid grid-cols-2 gap-2.5">
+            {TONE_VIBES.map(tone => {
+              const active = currentTone === tone.id
+              return (
+                <button
+                  key={tone.id}
+                  onClick={() => selectTone(tone.id)}
+                  className={`flex items-center gap-3 px-3.5 py-3 rounded-xl border text-left transition-all duration-150 ${
+                    active
+                      ? `${tone.activeBorder} bg-white shadow-sm`
+                      : 'border-sand bg-white hover:border-sand hover:bg-beige/40'
+                  }`}
+                >
+                  {/* Mini swatch */}
+                  <div className={`relative w-9 h-9 rounded-lg flex-shrink-0 ${tone.bg} border border-black/[0.08]`}>
+                    <span className={`absolute bottom-1 right-1 w-2.5 h-2.5 rounded-full ${tone.dot} border border-black/10`} />
+                  </div>
+                  <div>
+                    <div className={`text-[14px] font-extrabold leading-tight ${active ? tone.activeText : 'text-ink'}`}>
+                      {tone.label}
+                    </div>
+                    <div className="text-[12px] font-semibold text-mist leading-tight mt-0.5">
+                      {tone.desc}
+                    </div>
+                  </div>
+                </button>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Layer 2: Personality */}
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.12em] text-mist">
+              Layer 2 — Personality <span className="text-sand ml-1">up to 2</span>
+            </p>
+            <span className={`text-[12px] font-bold px-2.5 py-1 rounded-full ${
+              currentStyles.length >= 2 ? 'bg-lilac text-white' : 'bg-beige text-mist'
+            }`}>
+              {currentStyles.length}/2
+            </span>
+          </div>
+          <div className="flex flex-wrap gap-2">
+            {STYLE_VIBES.map(style => {
+              const active = currentStyles.includes(style)
+              const maxed = !active && currentStyles.length >= 2
+              return (
+                <button
+                  key={style}
+                  onClick={() => toggleStyle(style)}
+                  disabled={maxed}
+                  className={`px-4 py-2 rounded-full text-[14px] font-bold border transition-all duration-150 ${
+                    active
+                      ? 'bg-lilac text-white border-lilac shadow-sm shadow-lilac/20'
+                      : maxed
+                        ? 'border-sand text-sand bg-white cursor-not-allowed'
+                        : 'border-sand text-mist bg-white hover:border-lilac/50 hover:text-lilac hover:bg-lilac-soft'
+                  }`}
+                >
+                  {style}
+                </button>
+              )
+            })}
+          </div>
+          {currentStyles.length >= 2 && (
+            <p className="text-[12px] font-semibold text-mist mt-2.5">
+              Max 2 selected. Click an active tag to swap it out.
+            </p>
+          )}
         </div>
       </CollapsibleSection>
 
@@ -217,7 +345,7 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
             <button
               key={opt.id}
               onClick={() => updateGlobal({ animationIntensity: opt.id })}
-              className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl border-2 text-left transition-all duration-150 ${
+              className={`w-full flex items-center justify-between px-4 py-3.5 rounded-xl border text-left transition-all duration-150 ${
                 g.animationIntensity === opt.id
                   ? 'border-lilac/60 bg-lilac-soft'
                   : 'border-sand bg-white hover:border-lilac/25 hover:bg-beige/40'
