@@ -63,8 +63,8 @@ export function FeaturesForm({ data, onUpdate }: Props) {
               onClick={() => setCardCount(n)}
               className={`flex-1 py-1.5 rounded-md text-sm font-medium border transition-all ${
                 data.cardCount === n
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {n}
@@ -82,8 +82,8 @@ export function FeaturesForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ bgType: t })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.bgType === t
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {t === 'dark' ? 'Dark' : 'Video URL'}
@@ -103,8 +103,8 @@ export function FeaturesForm({ data, onUpdate }: Props) {
       <div className="space-y-3">
         <label className="label-base">Cards</label>
         {data.cards.slice(0, data.cardCount).map((card, i) => (
-          <div key={i} className="p-3 bg-surface rounded-lg border border-[#252836] space-y-2">
-            <div className="text-xs font-semibold text-slate-500 uppercase tracking-wider">Card {i + 1}</div>
+          <div key={i} className="p-3 bg-white rounded-lg border border-sand space-y-2">
+            <div className="text-xs font-semibold text-mist/70 uppercase tracking-wider">Card {i + 1}</div>
             <div className="grid grid-cols-2 gap-2">
               <div>
                 <label className="label-base">Icon (lucide name)</label>
@@ -146,7 +146,7 @@ export function FeaturesForm({ data, onUpdate }: Props) {
             </div>
             <div className="grid grid-cols-2 gap-2">
               <div>
-                <label className="label-base">Stat Value <span className="text-slate-600 font-normal">(opt)</span></label>
+                <label className="label-base">Stat Value <span className="text-mist/50 font-normal">(opt)</span></label>
                 <input
                   className="input-base text-xs"
                   placeholder="e.g. 200+"
@@ -155,7 +155,7 @@ export function FeaturesForm({ data, onUpdate }: Props) {
                 />
               </div>
               <div>
-                <label className="label-base">Stat Label <span className="text-slate-600 font-normal">(opt)</span></label>
+                <label className="label-base">Stat Label <span className="text-mist/50 font-normal">(opt)</span></label>
                 <input
                   className="input-base text-xs"
                   placeholder="e.g. Integrations"

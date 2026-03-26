@@ -77,8 +77,8 @@ export function PricingForm({ data, onUpdate }: Props) {
               onClick={() => setPlanCount(n)}
               className={`flex-1 py-1.5 rounded-md text-sm font-medium border transition-all ${
                 data.planCount === n
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {n}
@@ -90,15 +90,15 @@ export function PricingForm({ data, onUpdate }: Props) {
       <div className="space-y-3">
         <label className="label-base">Plans</label>
         {data.plans.slice(0, data.planCount).map((plan, i) => (
-          <div key={i} className="p-3 bg-surface rounded-lg border border-[#252836] space-y-2">
+          <div key={i} className="p-3 bg-white rounded-lg border border-sand space-y-2">
             <div className="flex items-center justify-between">
-              <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Plan {i + 1}</span>
+              <span className="text-[10px] font-semibold text-mist/70 uppercase tracking-wider">Plan {i + 1}</span>
               <button
                 onClick={() => updatePlan(i, 'highlighted', !plan.highlighted)}
                 className={`text-[10px] px-2 py-0.5 rounded-full border transition-all ${
                   plan.highlighted
-                    ? 'border-amber-500/50 bg-amber-500/10 text-amber-300'
-                    : 'border-[#252836] text-slate-500 hover:border-slate-600'
+                    ? 'border-amber-400/60 bg-amber-50 text-amber-600'
+                    : 'border-sand text-mist/70 hover:border-slate-600'
                 }`}
               >
                 {plan.highlighted ? '★ Highlighted' : '☆ Highlight'}
@@ -145,7 +145,7 @@ export function PricingForm({ data, onUpdate }: Props) {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="label-base mb-0">Features</label>
-                <button onClick={() => addFeature(i)} className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+                <button onClick={() => addFeature(i)} className="text-xs text-lilac hover:text-lilac flex items-center gap-1">
                   <Plus className="w-3 h-3" /> Add
                 </button>
               </div>
@@ -160,7 +160,7 @@ export function PricingForm({ data, onUpdate }: Props) {
                     />
                     <button
                       onClick={() => removeFeature(i, j)}
-                      className="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded border border-[#252836] transition-all"
+                      className="p-1.5 text-mist/70 hover:text-rose-500 hover:bg-rose-50 rounded border border-sand transition-all"
                     >
                       <X className="w-3 h-3" />
                     </button>

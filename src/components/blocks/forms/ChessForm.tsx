@@ -43,8 +43,8 @@ export function ChessForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ direction: d })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.direction === d
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {d === 'image-left' ? 'Image Left' : 'Image Right'}
@@ -62,8 +62,8 @@ export function ChessForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ mediaType: t })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.mediaType === t
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -88,7 +88,7 @@ export function ChessForm({ data, onUpdate }: Props) {
         />
       </div>
       <div>
-        <label className="label-base">Heading Line 2 <span className="text-slate-600 font-normal">(italic serif)</span></label>
+        <label className="label-base">Heading Line 2 <span className="text-mist/50 font-normal">(italic serif)</span></label>
         <input
           className="input-base"
           placeholder="e.g. for your entire stack"
@@ -109,7 +109,7 @@ export function ChessForm({ data, onUpdate }: Props) {
       </div>
 
       <div>
-        <label className="label-base">CTA Label <span className="text-slate-600 font-normal">(optional)</span></label>
+        <label className="label-base">CTA Label <span className="text-mist/50 font-normal">(optional)</span></label>
         <input
           className="input-base"
           placeholder="e.g. Learn More"
@@ -120,9 +120,9 @@ export function ChessForm({ data, onUpdate }: Props) {
 
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label className="label-base mb-0">Stats <span className="text-slate-600 font-normal">(max 2)</span></label>
+          <label className="label-base mb-0">Stats <span className="text-mist/50 font-normal">(max 2)</span></label>
           {data.stats.length < 2 && (
-            <button onClick={addStat} className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+            <button onClick={addStat} className="text-xs text-lilac hover:text-lilac flex items-center gap-1">
               <Plus className="w-3 h-3" /> Add
             </button>
           )}
@@ -144,7 +144,7 @@ export function ChessForm({ data, onUpdate }: Props) {
               />
               <button
                 onClick={() => removeStat(i)}
-                className="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg border border-[#252836] transition-all"
+                className="p-2 text-mist/70 hover:text-rose-500 hover:bg-rose-50 rounded-lg border border-sand transition-all"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

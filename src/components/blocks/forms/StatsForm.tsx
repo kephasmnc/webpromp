@@ -44,7 +44,7 @@ export function StatsForm({ data, onUpdate }: Props) {
         />
       </div>
       <div>
-        <label className="label-base">Heading Line 2 <span className="text-slate-600 font-normal">(accent)</span></label>
+        <label className="label-base">Heading Line 2 <span className="text-mist/50 font-normal">(accent)</span></label>
         <input
           className="input-base"
           placeholder="e.g. for themselves"
@@ -54,7 +54,7 @@ export function StatsForm({ data, onUpdate }: Props) {
       </div>
 
       <div>
-        <label className="label-base">Background Video <span className="text-slate-600 font-normal">(optional)</span></label>
+        <label className="label-base">Background Video <span className="text-mist/50 font-normal">(optional)</span></label>
         <input
           className="input-base text-xs font-mono"
           placeholder="https://example.com/bg.mp4"
@@ -72,8 +72,8 @@ export function StatsForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ animated: val })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.animated === val
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {val ? 'Yes' : 'No'}
@@ -84,21 +84,21 @@ export function StatsForm({ data, onUpdate }: Props) {
 
       <div>
         <div className="flex items-center justify-between mb-1.5">
-          <label className="label-base mb-0">Metrics <span className="text-slate-600 font-normal">(max 6)</span></label>
+          <label className="label-base mb-0">Metrics <span className="text-mist/50 font-normal">(max 6)</span></label>
           {data.metrics.length < 6 && (
-            <button onClick={addMetric} className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+            <button onClick={addMetric} className="text-xs text-lilac hover:text-lilac flex items-center gap-1">
               <Plus className="w-3 h-3" /> Add
             </button>
           )}
         </div>
         <div className="space-y-2">
           {data.metrics.map((metric, i) => (
-            <div key={i} className="p-2.5 bg-surface rounded-lg border border-[#252836] space-y-2">
+            <div key={i} className="p-2.5 bg-white rounded-lg border border-sand space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Metric {i + 1}</span>
+                <span className="text-[10px] font-semibold text-mist/70 uppercase tracking-wider">Metric {i + 1}</span>
                 <button
                   onClick={() => removeMetric(i)}
-                  className="p-1 text-slate-600 hover:text-rose-400 hover:bg-rose-500/10 rounded transition-all"
+                  className="p-1 text-mist/50 hover:text-rose-500 hover:bg-rose-50 rounded transition-all"
                 >
                   <X className="w-3 h-3" />
                 </button>

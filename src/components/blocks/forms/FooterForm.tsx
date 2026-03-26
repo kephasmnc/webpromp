@@ -70,8 +70,8 @@ export function FooterForm({ data, onUpdate }: Props) {
               onClick={() => setColumnCount(n)}
               className={`flex-1 py-1.5 rounded-md text-sm font-medium border transition-all ${
                 data.columnCount === n
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {n}
@@ -83,7 +83,7 @@ export function FooterForm({ data, onUpdate }: Props) {
       <div className="space-y-2">
         <label className="label-base">Columns</label>
         {data.columns.slice(0, data.columnCount).map((col, i) => (
-          <div key={i} className="p-3 bg-surface rounded-lg border border-[#252836] space-y-2">
+          <div key={i} className="p-3 bg-white rounded-lg border border-sand space-y-2">
             <div>
               <label className="label-base">Column Heading</label>
               <input
@@ -96,7 +96,7 @@ export function FooterForm({ data, onUpdate }: Props) {
             <div>
               <div className="flex items-center justify-between mb-1">
                 <label className="label-base mb-0">Links</label>
-                <button onClick={() => addLink(i)} className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+                <button onClick={() => addLink(i)} className="text-xs text-lilac hover:text-lilac flex items-center gap-1">
                   <Plus className="w-3 h-3" /> Add
                 </button>
               </div>
@@ -117,7 +117,7 @@ export function FooterForm({ data, onUpdate }: Props) {
                     />
                     <button
                       onClick={() => removeLink(i, j)}
-                      className="p-1.5 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded border border-[#252836] transition-all"
+                      className="p-1.5 text-mist/70 hover:text-rose-500 hover:bg-rose-50 rounded border border-sand transition-all"
                     >
                       <X className="w-3 h-3" />
                     </button>

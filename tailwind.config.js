@@ -4,24 +4,36 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        sans: ['DM Sans', 'system-ui', 'sans-serif'],
+        sans: ['Nunito', 'system-ui', 'sans-serif'],
         mono: ['JetBrains Mono', 'monospace'],
       },
       colors: {
-        void: '#0a0b0f',
-        surface: '#13151d',
-        panel: '#1a1d27',
-        border: '#252836',
-        accent: '#6366f1',
-        'accent-dim': '#4f52c4',
+        // Light warm palette
+        cream:     '#FAFAF7',   // main app background
+        parchment: '#F4F2EB',   // sidebar / aside background
+        beige:     '#EDE9E0',   // panel / card background
+        sand:      '#D9D4C8',   // borders
+        // Accents
+        lilac: {
+          DEFAULT: '#8B7EC8',
+          dim:     '#7468AE',
+          soft:    '#EDE9F8',
+        },
+        sky: {
+          DEFAULT: '#4A7FBA',
+          soft:    '#E6EEF8',
+        },
+        // Text
+        ink:  '#2C2926',
+        mist: '#8C8478',
       },
       animation: {
-        'fade-in': 'fadeIn 0.2s ease-out',
-        'slide-down': 'slideDown 0.2s ease-out',
+        'fade-in':    'fadeIn 0.18s ease-out',
+        'slide-down': 'slideDown 0.18s ease-out',
       },
       keyframes: {
-        fadeIn: { from: { opacity: '0' }, to: { opacity: '1' } },
-        slideDown: { from: { opacity: '0', transform: 'translateY(-8px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
+        fadeIn:    { from: { opacity: '0' },                              to: { opacity: '1' } },
+        slideDown: { from: { opacity: '0', transform: 'translateY(-6px)' }, to: { opacity: '1', transform: 'translateY(0)' } },
       },
     },
   },

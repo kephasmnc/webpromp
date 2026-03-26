@@ -33,8 +33,8 @@ export function NavbarForm({ data, onUpdate }: Props) {
                 onClick={() => onUpdate({ logoPosition: pos })}
                 className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                   data.logoPosition === pos
-                    ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                    : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                    ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                    : 'border-sand text-mist hover:border-slate-600'
                 }`}
               >
                 {pos.charAt(0).toUpperCase() + pos.slice(1)}
@@ -51,8 +51,8 @@ export function NavbarForm({ data, onUpdate }: Props) {
                 onClick={() => onUpdate({ sticky: val })}
                 className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                   data.sticky === val
-                    ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                    : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                    ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                    : 'border-sand text-mist hover:border-slate-600'
                 }`}
               >
                 {val ? 'Yes' : 'No'}
@@ -81,8 +81,8 @@ export function NavbarForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ ctaStyle: s })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.ctaStyle === s
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {s.charAt(0).toUpperCase() + s.slice(1)}
@@ -94,7 +94,7 @@ export function NavbarForm({ data, onUpdate }: Props) {
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <label className="label-base mb-0">Nav Links</label>
-          <button onClick={addLink} className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+          <button onClick={addLink} className="text-xs text-lilac hover:text-lilac flex items-center gap-1">
             <Plus className="w-3 h-3" /> Add
           </button>
         </div>
@@ -109,7 +109,7 @@ export function NavbarForm({ data, onUpdate }: Props) {
               />
               <button
                 onClick={() => removeLink(i)}
-                className="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg border border-[#252836] transition-all"
+                className="p-2 text-mist/70 hover:text-rose-500 hover:bg-rose-50 rounded-lg border border-sand transition-all"
               >
                 <X className="w-3.5 h-3.5" />
               </button>

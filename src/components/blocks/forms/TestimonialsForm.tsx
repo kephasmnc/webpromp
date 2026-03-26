@@ -53,8 +53,8 @@ export function TestimonialsForm({ data, onUpdate }: Props) {
               onClick={() => setCount(n)}
               className={`flex-1 py-1.5 rounded-md text-sm font-medium border transition-all ${
                 data.count === n
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {n}
@@ -66,8 +66,8 @@ export function TestimonialsForm({ data, onUpdate }: Props) {
       <div className="space-y-2">
         <label className="label-base">Testimonials</label>
         {data.testimonials.slice(0, data.count).map((t, i) => (
-          <div key={i} className="p-3 bg-surface rounded-lg border border-[#252836] space-y-2">
-            <div className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">{i + 1}</div>
+          <div key={i} className="p-3 bg-white rounded-lg border border-sand space-y-2">
+            <div className="text-[10px] font-semibold text-mist/70 uppercase tracking-wider">{i + 1}</div>
             <div>
               <label className="label-base">Quote</label>
               <textarea

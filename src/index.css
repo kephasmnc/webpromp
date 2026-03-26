@@ -12,12 +12,13 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    font-size: 15px;
   }
 
   body {
-    background: #0a0b0f;
-    color: #f1f5f9;
-    font-family: 'DM Sans', system-ui, sans-serif;
+    background: #FAFAF7;
+    color: #2C2926;
+    font-family: 'Nunito', system-ui, sans-serif;
     overflow: hidden;
     height: 100vh;
   }
@@ -30,83 +31,86 @@
 
   /* Scrollbar styling */
   ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 5px;
+    height: 5px;
   }
   ::-webkit-scrollbar-track {
     background: transparent;
   }
   ::-webkit-scrollbar-thumb {
-    background: #2a2d3a;
-    border-radius: 2px;
+    background: #D9D4C8;
+    border-radius: 99px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #3a3d4a;
+    background: #C4BEB0;
   }
 }
 
 @layer components {
+
+  /* ── Inputs ── */
   .input-base {
-    @apply w-full bg-surface border border-[#252836] rounded-lg px-3 py-2 text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/20 transition-all duration-150;
+    @apply w-full bg-white border border-sand rounded-lg px-4 py-2.5 text-sm font-medium text-ink placeholder-mist/60
+           focus:outline-none focus:border-lilac/50 focus:ring-2 focus:ring-lilac/15
+           transition-all duration-150;
   }
 
+  /* ── Labels ── */
   .label-base {
-    @apply block text-xs font-medium text-slate-400 mb-1.5;
+    @apply block text-sm font-semibold text-ink/60 mb-2;
   }
 
+  /* ── Section header (sidebar collapsible title) ── */
   .section-header {
-    @apply flex items-center gap-2 text-xs font-semibold text-slate-400 uppercase tracking-widest mb-3;
+    @apply flex items-center gap-2 text-xs font-bold text-mist uppercase tracking-widest mb-4;
   }
 
+  /* ── Buttons ── */
   .btn-primary {
-    @apply bg-indigo-500 hover:bg-indigo-400 text-white text-sm font-medium px-4 py-2 rounded-lg transition-colors duration-150 flex items-center gap-2;
+    @apply bg-lilac hover:bg-lilac-dim text-white text-sm font-bold px-5 py-2.5 rounded-xl
+           transition-all duration-150 flex items-center gap-2 shadow-sm shadow-lilac/20
+           hover:shadow-md hover:shadow-lilac/25 active:scale-[0.98];
   }
 
   .btn-ghost {
-    @apply text-slate-400 hover:text-slate-200 hover:bg-white/5 text-sm px-2 py-1.5 rounded-md transition-all duration-150 flex items-center gap-1.5;
+    @apply text-mist hover:text-ink hover:bg-beige text-sm font-medium px-3 py-2 rounded-lg
+           transition-all duration-150 flex items-center gap-2;
   }
 
+  /* ── Cards / block containers ── */
   .card-surface {
-    @apply bg-panel border border-[#252836] rounded-xl;
+    @apply bg-white border border-sand rounded-2xl;
   }
 
-  .prompt-token {
-    @apply text-indigo-400;
+  /* ── Vibe tags ── */
+  .vibe-tag {
+    @apply px-3.5 py-1.5 rounded-full text-sm font-semibold border cursor-pointer transition-all duration-150 select-none;
   }
-  .prompt-section-header {
-    @apply text-emerald-400 font-semibold;
+  .vibe-tag.active {
+    @apply bg-lilac-soft border-lilac/40 text-lilac;
   }
-  .prompt-label {
-    @apply text-amber-400;
+  .vibe-tag.inactive {
+    @apply bg-white border-sand text-mist hover:border-lilac/30 hover:text-ink hover:bg-lilac-soft/50;
   }
-  .prompt-value {
-    @apply text-slate-200;
-  }
+
+  /* ── Prompt syntax ── */
+  .prompt-section-header { @apply text-lilac font-bold; }
+  .prompt-label          { @apply text-sky; }
+  .prompt-value          { @apply text-ink; }
 }
 
 /* Smooth scrolling for panels */
 .scrollable {
   overflow-y: auto;
   scrollbar-width: thin;
-  scrollbar-color: #2a2d3a transparent;
+  scrollbar-color: #D9D4C8 transparent;
 }
 
 /* Color swatch */
 .color-swatch {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  border: 1px solid rgba(255,255,255,0.1);
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 1px solid rgba(0,0,0,0.08);
   flex-shrink: 0;
-}
-
-/* Vibe tag */
-.vibe-tag {
-  @apply px-3 py-1 rounded-full text-xs font-medium border cursor-pointer transition-all duration-150 select-none;
-}
-.vibe-tag.active {
-  @apply bg-indigo-500/20 border-indigo-500/50 text-indigo-300;
-}
-.vibe-tag.inactive {
-  @apply bg-transparent border-[#252836] text-slate-400 hover:border-slate-500 hover:text-slate-300;
 }

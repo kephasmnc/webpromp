@@ -24,7 +24,7 @@ export function MarqueeForm({ data, onUpdate }: Props) {
   return (
     <div className="space-y-3">
       <div>
-        <label className="label-base">Label <span className="text-slate-600 font-normal">(above marquee)</span></label>
+        <label className="label-base">Label <span className="text-mist/50 font-normal">(above marquee)</span></label>
         <input
           className="input-base"
           placeholder="e.g. Trusted by leading brands"
@@ -36,7 +36,7 @@ export function MarqueeForm({ data, onUpdate }: Props) {
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <label className="label-base mb-0">Brand / Partner Names</label>
-          <button onClick={addBrand} className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+          <button onClick={addBrand} className="text-xs text-lilac hover:text-lilac flex items-center gap-1">
             <Plus className="w-3 h-3" /> Add
           </button>
         </div>
@@ -51,7 +51,7 @@ export function MarqueeForm({ data, onUpdate }: Props) {
               />
               <button
                 onClick={() => removeBrand(i)}
-                className="p-2 text-slate-500 hover:text-rose-400 hover:bg-rose-500/10 rounded-lg border border-[#252836] transition-all"
+                className="p-2 text-mist/70 hover:text-rose-500 hover:bg-rose-50 rounded-lg border border-sand transition-all"
               >
                 <X className="w-3.5 h-3.5" />
               </button>
@@ -69,8 +69,8 @@ export function MarqueeForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ speed: s })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.speed === s
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {s.charAt(0).toUpperCase() + s.slice(1)}

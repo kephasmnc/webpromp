@@ -9,7 +9,7 @@ export function HeroForm({ data, onUpdate }: Props) {
   return (
     <div className="space-y-3">
       <div>
-        <label className="label-base">Section Tag <span className="text-slate-600 font-normal">(small label above headline)</span></label>
+        <label className="label-base">Section Tag <span className="text-mist/50 font-normal">(small label above headline)</span></label>
         <input
           className="input-base"
           placeholder="e.g. Evolve Responsible Ventures"
@@ -19,7 +19,7 @@ export function HeroForm({ data, onUpdate }: Props) {
       </div>
 
       <div>
-        <label className="label-base">Headline Line 1 <span className="text-slate-600 font-normal">(font-light)</span></label>
+        <label className="label-base">Headline Line 1 <span className="text-mist/50 font-normal">(font-light)</span></label>
         <input
           className="input-base"
           placeholder="e.g. Revenue acceleration"
@@ -28,7 +28,7 @@ export function HeroForm({ data, onUpdate }: Props) {
         />
       </div>
       <div>
-        <label className="label-base">Headline Line 2 <span className="text-slate-600 font-normal">(font-light)</span></label>
+        <label className="label-base">Headline Line 2 <span className="text-mist/50 font-normal">(font-light)</span></label>
         <input
           className="input-base"
           placeholder="e.g. built for the"
@@ -37,7 +37,7 @@ export function HeroForm({ data, onUpdate }: Props) {
         />
       </div>
       <div>
-        <label className="label-base">Headline Line 3 <span className="text-slate-600 font-normal">(italic serif accent)</span></label>
+        <label className="label-base">Headline Line 3 <span className="text-mist/50 font-normal">(italic serif accent)</span></label>
         <input
           className="input-base"
           placeholder="e.g. modern enterprise"
@@ -68,7 +68,7 @@ export function HeroForm({ data, onUpdate }: Props) {
           />
         </div>
         <div>
-          <label className="label-base">CTA Secondary <span className="text-slate-600 font-normal">(optional)</span></label>
+          <label className="label-base">CTA Secondary <span className="text-mist/50 font-normal">(optional)</span></label>
           <input
             className="input-base"
             placeholder="e.g. Watch Demo"
@@ -87,8 +87,8 @@ export function HeroForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ layout: l })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.layout === l
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {l === 'centered' ? 'Centered' : l === 'bottom-left' ? 'Bot. Left' : 'Bot. Right'}
@@ -106,8 +106,8 @@ export function HeroForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ bgType: t })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.bgType === t
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {t.charAt(0).toUpperCase() + t.slice(1)}
@@ -133,8 +133,8 @@ export function HeroForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ showMarquee: val })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.showMarquee === val
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {val ? 'Yes' : 'No'}

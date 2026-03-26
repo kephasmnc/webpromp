@@ -28,7 +28,7 @@ export function CTAForm({ data, onUpdate }: Props) {
         />
       </div>
       <div>
-        <label className="label-base">Heading Line 2 <span className="text-slate-600 font-normal">(accent)</span></label>
+        <label className="label-base">Heading Line 2 <span className="text-mist/50 font-normal">(accent)</span></label>
         <input
           className="input-base"
           placeholder="e.g. your business?"
@@ -59,7 +59,7 @@ export function CTAForm({ data, onUpdate }: Props) {
           />
         </div>
         <div>
-          <label className="label-base">CTA Secondary <span className="text-slate-600 font-normal">(opt)</span></label>
+          <label className="label-base">CTA Secondary <span className="text-mist/50 font-normal">(opt)</span></label>
           <input
             className="input-base"
             placeholder="e.g. Talk to Sales"
@@ -78,8 +78,8 @@ export function CTAForm({ data, onUpdate }: Props) {
               onClick={() => onUpdate({ bgType: t })}
               className={`flex-1 py-1.5 rounded-md text-xs font-medium border transition-all ${
                 data.bgType === t
-                  ? 'border-indigo-500/50 bg-indigo-500/10 text-indigo-300'
-                  : 'border-[#252836] text-slate-400 hover:border-slate-600'
+                  ? 'border-lilac/50 bg-lilac-soft text-lilac'
+                  : 'border-sand text-mist hover:border-slate-600'
               }`}
             >
               {t.charAt(0).toUpperCase() + t.slice(1)}

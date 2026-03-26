@@ -45,18 +45,18 @@ export function FAQForm({ data, onUpdate }: Props) {
       <div>
         <div className="flex items-center justify-between mb-1.5">
           <label className="label-base mb-0">Questions & Answers</label>
-          <button onClick={addItem} className="text-xs text-indigo-400 hover:text-indigo-300 flex items-center gap-1">
+          <button onClick={addItem} className="text-xs text-lilac hover:text-lilac flex items-center gap-1">
             <Plus className="w-3 h-3" /> Add Q&A
           </button>
         </div>
         <div className="space-y-2">
           {data.items.map((item, i) => (
-            <div key={i} className="p-3 bg-surface rounded-lg border border-[#252836] space-y-2">
+            <div key={i} className="p-3 bg-white rounded-lg border border-sand space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-[10px] font-semibold text-slate-500 uppercase tracking-wider">Q{i + 1}</span>
+                <span className="text-[10px] font-semibold text-mist/70 uppercase tracking-wider">Q{i + 1}</span>
                 <button
                   onClick={() => removeItem(i)}
-                  className="p-1 text-slate-600 hover:text-rose-400 hover:bg-rose-500/10 rounded transition-all"
+                  className="p-1 text-mist/50 hover:text-rose-500 hover:bg-rose-50 rounded transition-all"
                 >
                   <X className="w-3 h-3" />
                 </button>
