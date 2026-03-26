@@ -27,9 +27,9 @@ function getBorderRadius(style: string): string {
 }
 
 function getAnimConfig(intensity: string): string {
-  if (intensity === 'none') return 'No animations — static layout only'
-  if (intensity === 'dramatic') return 'Framer Motion whileInView with viewport={{ once: true }}, ease [0.76, 0, 0.24, 1], staggered delays i * 0.15, scale from 0.92→1 + fade, slide from y:40'
-  return 'Framer Motion whileInView with viewport={{ once: true }}, ease [0.25, 1, 0.5, 1], staggered delays i * 0.12, fade up from y:20'
+  if (intensity === 'none') return 'No animations — static layout only. Do NOT import or use framer-motion.'
+  if (intensity === 'dramatic') return `Framer Motion (import { motion } from 'framer-motion'). Apply to individual content blocks — NOT to the section wrapper. Pattern: <motion.div initial={{ opacity: 0, y: 40, scale: 0.92 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: index * 0.15 }}>. Apply to: each heading line, each card in a grid (stagger via index), stat numbers, CTA button. Hero heading lines should stagger: line 1 delay 0, line 2 delay 0.15, line 3 delay 0.3.`
+  return `Framer Motion (import { motion } from 'framer-motion'). Apply to individual content blocks — NOT to the section wrapper. Pattern: <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1], delay: index * 0.12 }}>. Apply to: section heading, each card in grids (stagger via index), hero text lines. Keep animations subtle — they should enhance, not distract.`
 }
 
 function getCardStyle(preset: string): string {
@@ -125,7 +125,7 @@ const STYLE_IDS = ['minimal', 'premium', 'elegant', 'bold', 'playful', 'modern',
 const TONE_DESIGN_LANGUAGE: Record<string, string> = {
   dark:     'Dark aesthetic: ALL backgrounds and surfaces use the Background color (dark). No light panels, no white cards. Borders are very low-opacity. Depth is created through subtle surface variations, not by introducing light elements.',
   light:    'Light aesthetic: warm, airy atmosphere using the Background color. Cards and surfaces are slightly off-white/warm. Sections breathe — generous whitespace. Avoid stark white contrasts; keep the warmth of the palette.',
-  colorful: 'Colorful aesthetic: use the Primary/Accent color boldly and frequently. Apply it on section backgrounds, large headings, icon fills, and hover states. Color is the dominant visual element — let it saturate the page.',
+  colorful: 'Colorful aesthetic: the Background color IS the dominant color (it will be a vivid hue — purple, blue, red, green, orange, etc.). ALL sections use this Background color — do NOT introduce white, black, or dark panels. Foreground text is white. The Primary/Accent is a contrasting light tint (cream, yellow, light blue) — use it for highlights, hover states, and secondary elements. The entire page feels like a full-color artwork. Contrast ratio between bg and text must be at least 4.5:1.',
   charged:  'Charged aesthetic: the Background is neutral and restrained. The Primary/Accent color is ELECTRIC and dominant — use it AGGRESSIVELY on large headlines, CTA buttons, underlines, borders, and decorative shapes. Everything except the accent stays muted. The dramatic tension between neutral and vivid IS the design. Do not use the accent sparingly.',
 }
 
@@ -144,11 +144,19 @@ const STYLE_DESIGN_LANGUAGE: Record<string, string> = {
 
 // ─── Layout Style Language ────────────────────────────────────────────────────
 const LAYOUT_STYLE_LANGUAGE: Record<string, string> = {
-  classic:    'Use proven web conventions: clean CSS grid, clear visual hierarchy, centered or symmetrical section compositions. Each section has a clear heading, body, and optional CTA. Layouts feel familiar and navigable.',
-  asymmetric: 'Break the grid intentionally: uneven column splits (e.g. 40/60, 30/70), staggered elements, overlapping layers, varied section rhythms (some wide, some narrow). Avoid mirror-image symmetry. Every section should have a different compositional logic.',
-  editorial:  'Treat typography as a graphic element. Use dramatic font size contrasts (hero at 96–120px, captions at 11px). Text can overlap images. Pull quotes span multiple columns. Section intros use large decorative numerals or letters. Think high-end magazine.',
-  immersive:  'Full-bleed everything. No card borders — surfaces blend into each other. Background media (video/image) dominates. Overlays use gradients not opaque panels. Content floats over backgrounds. Minimal chrome — no visible page containers or boxes.',
+  classic:    'Use proven web conventions: clean CSS grid, clear visual hierarchy, centered or symmetrical section compositions. IMPORTANT: each section must still look visually distinct from the previous — vary between centered, left-aligned, two-column splits, and full-width layouts. No two consecutive sections should have the same structure.',
+  asymmetric: 'Break the grid intentionally: uneven column splits (e.g. 40/60, 30/70), staggered elements, overlapping layers, varied section rhythms. EVERY section must have a different compositional logic — if one section centers content, the next must break left, then perhaps a diagonal split, then a masonry-style grid. Avoid any repeating structure.',
+  editorial:  'Treat typography as a graphic element. Dramatic font size contrasts (hero at 96–120px, captions at 11px). Text can overlap images. Pull quotes span multiple columns. Section intros use large decorative numerals. Each section reads like a different editorial spread — radically different from the previous.',
+  immersive:  'Full-bleed everything. No card borders — surfaces blend. Background media dominates. Overlays use gradients not opaque panels. Content floats. Vary depth: some sections feel "close", others "far". No two sections use the same blend/overlay technique.',
 }
+
+const LAYOUT_VARIETY_DIRECTIVE = `LAYOUT VARIETY RULES (critical):
+- Every section must look structurally different from the previous one.
+- Alternate between: full-width centered, split left/right, asymmetric column, masonry grid, horizontal scroll, oversized type-only.
+- Vary section heights: some tall/cinematic (min-h-screen), others compact (py-16).
+- Vary card grids: 2-col, 3-col, 4-col, list format, horizontal cards — never the same twice.
+- Vary heading alignment per section: centered → left → right → centered again.
+- If two sections are similar in content, they MUST differ in structure/layout.`
 
 // ─── Global Patterns ──────────────────────────────────────────────────────────
 function buildGlobalPatterns(g: AppState['global']): string {
@@ -186,6 +194,8 @@ ${vibeSection}
 
 Composition style — ${layoutStyle.toUpperCase()}:
 ${layoutDesc}
+
+${LAYOUT_VARIETY_DIRECTIVE}
 
 Section tags: ${sectionTagStyle}
 Pill badges: ${pillBadge}

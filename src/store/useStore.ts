@@ -23,11 +23,11 @@ const TONE_PALETTES = {
     muteds:      ['#E5E0D5', '#E0DBD0', '#DDD8CC', '#E8E3D8', '#DAD5CA'],
   },
   colorful: {
-    backgrounds: ['#0D0B14', '#07030F', '#050A0F', '#0A050F', '#080510', '#0A0810', '#06040F'],
-    foregrounds: ['#F8F8F8', '#F5F5F5', '#FAFAFA', '#F0F0F0', '#EBEBEB'],
-    primaries:   ['#C855F0', '#F05578', '#55C8F0', '#F0C855', '#55F078', '#F07855', '#A855F0', '#F0558B', '#55A0F0', '#F09055'],
-    cards:       ['#16121F', '#12101A', '#0F1318', '#1A1220', '#13101C'],
-    muteds:      ['#2A2338', '#241E35', '#1E2330', '#2D2040', '#201D32'],
+    backgrounds: ['#5B21B6', '#DC2626', '#D97706', '#16A34A', '#2563EB', '#DB2777', '#0891B2', '#15803D', '#EA580C', '#4338CA'],
+    foregrounds: ['#FFFFFF', '#FAFAFA', '#F9FAFB'],
+    primaries:   ['#FEF08A', '#FDE68A', '#BAE6FD', '#D9F99D', '#FBCFE8', '#E9D5FF', '#FED7AA', '#F0FDF4', '#FEFCE8'],
+    cards:       ['#4C1D95', '#B91C1C', '#B45309', '#14532D', '#1E3A8A', '#9D174D', '#0E7490', '#064E3B', '#C2410C', '#312E81'],
+    muteds:      ['#3730A3', '#7F1D1D', '#78350F', '#052E16', '#1E3A5F', '#831843', '#0C4A6E', '#022C22', '#7C2D12', '#1E1B4B'],
   },
   charged: {
     backgrounds: ['#E8E2D6', '#EDE9E0', '#E5DDD0', '#DDD6C8', '#E2DDD4', '#EAE5DA', '#E0DAD0', '#E6E0D5'],
