@@ -115,12 +115,30 @@ export function HeroForm({ data, onUpdate }: Props) {
           ))}
         </div>
         {data.bgType !== 'none' && (
-          <input
-            className="input-base text-xs font-mono"
-            placeholder={data.bgType === 'image' ? 'https://example.com/hero.jpg' : 'https://example.com/hero.mp4'}
-            value={data.bgUrl}
-            onChange={e => onUpdate({ bgUrl: e.target.value })}
-          />
+          <div className="space-y-2">
+            <input
+              className="input-base text-xs font-mono"
+              placeholder={data.bgType === 'image' ? 'https://example.com/hero.jpg' : 'https://videos.pexels.com/video-files/xxxxx/file.mp4'}
+              value={data.bgUrl}
+              onChange={e => onUpdate({ bgUrl: e.target.value })}
+            />
+            {data.bgType === 'video' && data.bgUrl && !data.bgUrl.match(/\.(mp4|webm|ogg)(\?.*)?$/i) && (
+              <div className="flex items-start gap-2 bg-amber-50 border border-amber-200 rounded-xl px-3.5 py-2.5">
+                <span className="text-amber-500 text-base leading-none mt-0.5">⚠</span>
+                <div className="text-[12px] font-semibold text-amber-700 leading-relaxed">
+                  <p className="font-extrabold mb-0.5">URL precisa ser um arquivo .mp4 direto</p>
+                  <p>No Pexels: abra o vídeo → clique no player com botão direito → <span className="font-mono bg-amber-100 px-1 rounded">Copiar endereço do vídeo</span></p>
+                  <p className="mt-1 text-amber-600">O link deve ser parecido com: <span className="font-mono">videos.pexels.com/video-files/…/….mp4</span></p>
+                </div>
+              </div>
+            )}
+            {data.bgType === 'video' && !data.bgUrl && (
+              <p className="text-[12px] font-semibold text-mist">
+                Cole uma URL <span className="font-mono">.mp4</span> direto — não a página do vídeo.
+                No Pexels: abra o vídeo → botão direito → "Copiar endereço do vídeo"
+              </p>
+            )}
+          </div>
         )}
       </div>
 
