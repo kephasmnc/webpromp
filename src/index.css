@@ -12,12 +12,12 @@
   html {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    font-size: 15px;
+    font-size: 16px;
   }
 
   body {
     background: #FAFAF7;
-    color: #2C2926;
+    color: #1A1816;
     font-family: 'Nunito', system-ui, sans-serif;
     overflow: hidden;
     height: 100vh;
@@ -50,44 +50,42 @@
 
   /* ── Inputs ── */
   .input-base {
-    @apply w-full bg-white border border-sand rounded-lg px-4 py-2.5 text-sm font-medium text-ink placeholder-mist/60
-           focus:outline-none focus:border-lilac/50 focus:ring-2 focus:ring-lilac/15
+    @apply w-full bg-white border-2 border-sand rounded-xl px-4 py-3 text-[15px] font-semibold text-ink
+           placeholder:text-mist/60 placeholder:font-normal
+           focus:outline-none focus:border-lilac/60 focus:ring-2 focus:ring-lilac/10
            transition-all duration-150;
   }
 
   /* ── Labels ── */
   .label-base {
-    @apply block text-sm font-semibold text-ink/60 mb-2;
-  }
-
-  /* ── Section header (sidebar collapsible title) ── */
-  .section-header {
-    @apply flex items-center gap-2 text-xs font-bold text-mist uppercase tracking-widest mb-4;
+    @apply block text-[13px] font-bold text-mist uppercase tracking-widest mb-2;
   }
 
   /* ── Buttons ── */
   .btn-primary {
-    @apply bg-lilac hover:bg-lilac-dim text-white text-sm font-bold px-5 py-2.5 rounded-xl
-           transition-all duration-150 flex items-center gap-2 shadow-sm shadow-lilac/20
-           hover:shadow-md hover:shadow-lilac/25 active:scale-[0.98];
+    @apply bg-lilac hover:bg-lilac-dim text-white text-[15px] font-bold px-6 py-3 rounded-xl
+           transition-all duration-150 flex items-center gap-2
+           shadow-sm shadow-lilac/30 hover:shadow-md hover:shadow-lilac/30
+           active:scale-[0.98];
   }
 
   .btn-ghost {
-    @apply text-mist hover:text-ink hover:bg-beige text-sm font-medium px-3 py-2 rounded-lg
+    @apply text-mist hover:text-ink hover:bg-beige text-[15px] font-semibold px-3 py-2 rounded-lg
            transition-all duration-150 flex items-center gap-2;
   }
 
   /* ── Cards / block containers ── */
   .card-surface {
-    @apply bg-white border border-sand rounded-2xl;
+    @apply bg-white border-2 border-sand rounded-2xl;
   }
 
   /* ── Vibe tags ── */
   .vibe-tag {
-    @apply px-3.5 py-1.5 rounded-full text-sm font-semibold border cursor-pointer transition-all duration-150 select-none;
+    @apply px-4 py-2 rounded-full text-[14px] font-bold border-2 cursor-pointer
+           transition-all duration-150 select-none;
   }
   .vibe-tag.active {
-    @apply bg-lilac-soft border-lilac/40 text-lilac;
+    @apply bg-lilac-soft border-lilac/50 text-lilac;
   }
   .vibe-tag.inactive {
     @apply bg-white border-sand text-mist hover:border-lilac/30 hover:text-ink hover:bg-lilac-soft/50;
@@ -108,9 +106,9 @@
 
 /* Color swatch */
 .color-swatch {
-  width: 22px;
-  height: 22px;
+  width: 24px;
+  height: 24px;
   border-radius: 6px;
-  border: 1px solid rgba(0,0,0,0.08);
+  border: 2px solid rgba(0,0,0,0.08);
   flex-shrink: 0;
 }

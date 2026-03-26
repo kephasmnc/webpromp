@@ -10,22 +10,22 @@ export default function App() {
   return (
     <div className="flex flex-col h-screen bg-cream overflow-hidden">
       {/* Top bar */}
-      <header className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b border-sand bg-white z-10 shadow-sm shadow-sand/40">
+      <header className="flex-shrink-0 flex items-center justify-between px-6 py-4 border-b-2 border-sand bg-white z-10 shadow-sm shadow-sand/30">
         <div className="flex items-center gap-3">
-          <div className="w-9 h-9 rounded-xl bg-lilac-soft border border-lilac/25 flex items-center justify-center">
-            <Layers className="w-4.5 h-4.5 text-lilac" />
+          <div className="w-10 h-10 rounded-xl bg-lilac-soft border-2 border-lilac/25 flex items-center justify-center">
+            <Layers className="w-5 h-5 text-lilac" />
           </div>
           <div>
-            <span className="text-base font-800 text-ink tracking-tight">WebPromp</span>
-            <span className="text-sm text-mist font-medium ml-2">Landing Page Prompt Generator</span>
+            <span className="text-lg font-extrabold text-ink tracking-tight">WebPromp</span>
+            <span className="text-[14px] text-mist font-semibold ml-2.5">Landing Page Prompt Generator</span>
           </div>
         </div>
         <div className="flex items-center gap-3">
-          <span className="text-sm font-semibold text-mist bg-beige px-3 py-1 rounded-full">
+          <span className="text-[13px] font-bold text-mist bg-beige px-4 py-1.5 rounded-full">
             {store.state.blocks.length} section{store.state.blocks.length !== 1 ? 's' : ''}
           </span>
-          <div className="flex items-center gap-1.5 text-xs font-semibold text-emerald-600 bg-emerald-50 border border-emerald-200 px-3 py-1 rounded-full">
-            <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+          <div className="flex items-center gap-2 text-[13px] font-bold text-emerald-700 bg-emerald-50 border-2 border-emerald-200 px-4 py-1.5 rounded-full">
+            <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
             Live
           </div>
         </div>
@@ -34,7 +34,7 @@ export default function App() {
       {/* Main 3-column layout */}
       <div className="flex flex-1 overflow-hidden">
         {/* Left: Global Setup */}
-        <aside className="w-[320px] flex-shrink-0 border-r border-sand bg-parchment scrollable">
+        <aside className="w-[330px] flex-shrink-0 border-r-2 border-sand bg-parchment scrollable">
           <GlobalSetup
             global={store.state.global}
             updateGlobal={store.updateGlobal}
@@ -55,7 +55,7 @@ export default function App() {
         </main>
 
         {/* Right: Prompt Panel */}
-        <aside className="w-[440px] flex-shrink-0 border-l border-sand bg-parchment">
+        <aside className="w-[460px] flex-shrink-0 border-l-2 border-sand bg-parchment">
           <PromptPanel state={store.state} />
         </aside>
       </div>

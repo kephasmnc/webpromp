@@ -24,8 +24,8 @@ export default {
           soft:    '#E6EEF8',
         },
         // Text
-        ink:  '#2C2926',
-        mist: '#8C8478',
+        ink:  '#1A1816',
+        mist: '#5C5650',
       },
       animation: {
         'fade-in':    'fadeIn 0.18s ease-out',

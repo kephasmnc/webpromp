@@ -14,16 +14,16 @@ import { FooterForm } from './forms/FooterForm'
 import { MarqueeForm } from './forms/MarqueeForm'
 
 const BLOCK_META: Record<string, { label: string; icon: string; accent: string; bg: string }> = {
-  navbar:       { label: 'Navbar',           icon: '▤',  accent: 'text-sky',    bg: 'bg-sky-soft' },
-  hero:         { label: 'Hero',             icon: '⬛', accent: 'text-lilac',  bg: 'bg-lilac-soft' },
-  marquee:      { label: 'Partners Marquee', icon: '↔',  accent: 'text-sky',    bg: 'bg-sky-soft' },
-  features:     { label: 'Features',         icon: '⊞',  accent: 'text-emerald-600', bg: 'bg-emerald-50' },
-  chess:        { label: 'Chess Layout',     icon: '◫',  accent: 'text-orange-500',  bg: 'bg-orange-50' },
-  stats:        { label: 'Stats / Numbers',  icon: '◎',  accent: 'text-amber-600',   bg: 'bg-amber-50' },
-  testimonials: { label: 'Testimonials',     icon: '❝',  accent: 'text-pink-500',    bg: 'bg-pink-50' },
+  navbar:       { label: 'Navbar',           icon: '▤',  accent: 'text-sky',         bg: 'bg-sky-soft' },
+  hero:         { label: 'Hero',             icon: '⬛', accent: 'text-lilac',        bg: 'bg-lilac-soft' },
+  marquee:      { label: 'Partners Marquee', icon: '↔',  accent: 'text-sky',         bg: 'bg-sky-soft' },
+  features:     { label: 'Features',         icon: '⊞',  accent: 'text-emerald-700', bg: 'bg-emerald-50' },
+  chess:        { label: 'Chess Layout',     icon: '◫',  accent: 'text-orange-600',  bg: 'bg-orange-50' },
+  stats:        { label: 'Stats / Numbers',  icon: '◎',  accent: 'text-amber-700',   bg: 'bg-amber-50' },
+  testimonials: { label: 'Testimonials',     icon: '❝',  accent: 'text-pink-600',    bg: 'bg-pink-50' },
   pricing:      { label: 'Pricing',          icon: '₿',  accent: 'text-lilac',       bg: 'bg-lilac-soft' },
-  faq:          { label: 'FAQ',              icon: '?',  accent: 'text-teal-600',    bg: 'bg-teal-50' },
-  cta:          { label: 'CTA Final',        icon: '→',  accent: 'text-rose-500',    bg: 'bg-rose-50' },
+  faq:          { label: 'FAQ',              icon: '?',  accent: 'text-teal-700',    bg: 'bg-teal-50' },
+  cta:          { label: 'CTA Final',        icon: '→',  accent: 'text-rose-600',    bg: 'bg-rose-50' },
   footer:       { label: 'Footer',           icon: '▬',  accent: 'text-mist',        bg: 'bg-beige' },
 }
 
@@ -63,65 +63,57 @@ export function BlockCard({ block, index, total, onToggle, onRemove, onMoveUp, o
   return (
     <div className={`card-surface transition-all duration-200 ${!block.enabled ? 'opacity-40' : ''}`}>
       {/* Header */}
-      <div className="flex items-center gap-3 px-4 py-3.5">
-        {/* Drag handle */}
-        <GripVertical className="w-4 h-4 text-mist/40 flex-shrink-0 cursor-grab" />
+      <div className="flex items-center gap-3 px-5 py-4">
+        <GripVertical className="w-4 h-4 text-sand flex-shrink-0 cursor-grab" />
 
         {/* Index badge */}
-        <span className="text-xs font-800 text-mist/50 w-5 flex-shrink-0 text-center">{index + 1}</span>
+        <span className="text-[13px] font-extrabold text-mist w-6 flex-shrink-0 text-center">{index + 1}</span>
 
         {/* Icon chip */}
-        <span className={`w-8 h-8 rounded-lg ${meta.bg} flex items-center justify-center text-sm ${meta.accent} flex-shrink-0`}>
+        <span className={`w-9 h-9 rounded-xl ${meta.bg} border border-black/[0.06] flex items-center justify-center text-[15px] ${meta.accent} flex-shrink-0`}>
           {meta.icon}
         </span>
 
-        {/* Name */}
-        <span className="text-sm font-bold text-ink flex-1 min-w-0 truncate">{meta.label}</span>
+        {/* Block name */}
+        <span className="text-[15px] font-extrabold text-ink flex-1 min-w-0 truncate">{meta.label}</span>
 
         {/* Actions */}
-        <div className="flex items-center gap-0.5 flex-shrink-0">
+        <div className="flex items-center gap-1 flex-shrink-0">
           <button
             onClick={onMoveUp}
             disabled={index === 0}
-            className="p-2 rounded-lg text-mist/60 hover:text-ink hover:bg-beige disabled:opacity-25 disabled:cursor-not-allowed transition-all"
-            title="Move up"
+            className="p-2.5 rounded-xl text-mist hover:text-ink hover:bg-beige disabled:opacity-25 disabled:cursor-not-allowed transition-all"
           >
             <ChevronUp className="w-4 h-4" />
           </button>
           <button
             onClick={onMoveDown}
             disabled={index === total - 1}
-            className="p-2 rounded-lg text-mist/60 hover:text-ink hover:bg-beige disabled:opacity-25 disabled:cursor-not-allowed transition-all"
-            title="Move down"
+            className="p-2.5 rounded-xl text-mist hover:text-ink hover:bg-beige disabled:opacity-25 disabled:cursor-not-allowed transition-all"
           >
             <ChevronDown className="w-4 h-4" />
           </button>
           <button
             onClick={onToggle}
-            className="p-2 rounded-lg text-mist/60 hover:text-ink hover:bg-beige transition-all"
-            title={block.enabled ? 'Disable section' : 'Enable section'}
+            className="p-2.5 rounded-xl text-mist hover:text-ink hover:bg-beige transition-all"
           >
-            {block.enabled
-              ? <Eye className="w-4 h-4" />
-              : <EyeOff className="w-4 h-4" />}
+            {block.enabled ? <Eye className="w-4 h-4" /> : <EyeOff className="w-4 h-4" />}
           </button>
           <button
             onClick={onRemove}
-            className="p-2 rounded-lg text-mist/60 hover:text-rose-500 hover:bg-rose-50 transition-all"
-            title="Remove section"
+            className="p-2.5 rounded-xl text-mist hover:text-rose-600 hover:bg-rose-50 transition-all"
           >
             <Trash2 className="w-4 h-4" />
           </button>
           <button
             onClick={() => setExpanded(!expanded)}
-            className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-bold transition-all ml-1 ${
+            className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-[14px] font-bold transition-all ml-1 ${
               expanded
-                ? 'bg-lilac-soft text-lilac'
-                : 'bg-beige text-mist hover:bg-lilac-soft hover:text-lilac'
+                ? 'bg-lilac text-white shadow-sm shadow-lilac/30'
+                : 'bg-beige text-mist hover:bg-lilac-soft hover:text-lilac border-2 border-sand hover:border-lilac/30'
             }`}
-            title={expanded ? 'Collapse' : 'Configure'}
           >
-            <Settings2 className="w-3.5 h-3.5" />
+            <Settings2 className="w-4 h-4" />
             {expanded ? 'Close' : 'Edit'}
           </button>
         </div>
@@ -129,7 +121,7 @@ export function BlockCard({ block, index, total, onToggle, onRemove, onMoveUp, o
 
       {/* Expanded Form */}
       {expanded && (
-        <div className="border-t border-sand px-5 py-5 bg-parchment/50 rounded-b-2xl">
+        <div className="border-t-2 border-sand px-6 py-6 bg-parchment/60 rounded-b-2xl">
           {renderForm()}
         </div>
       )}
