@@ -25,9 +25,9 @@ export const TONE_COLOR_DEFAULTS: Record<string, Partial<GlobalConfig>> = {
     bodyFont: 'Geist Sans',
   },
   charged: {
-    colors: { background: '38 18% 87%', foreground: '20 10% 10%', primary: '330 100% 58%', card: '38 14% 82%', muted: '38 10% 76%' },
+    colors: { background: '38 22% 86%', foreground: '20 12% 9%', primary: '330 100% 57%', card: '38 18% 80%', muted: '38 12% 73%' },
     displayFont: 'Gilda Display',
-    bodyFont: 'Geist',
+    bodyFont: 'Inter',
   },
 }
 

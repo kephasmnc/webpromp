@@ -1,9 +1,10 @@
 import { useState } from 'react'
 import {
-  Type, Palette, Sparkles, LayoutGrid, Sliders, Zap, ChevronDown
+  Palette, Sparkles, LayoutGrid, Sliders, Zap, ChevronDown, Type
 } from 'lucide-react'
 import type { GlobalConfig, Preset, ButtonStyle, AnimationIntensity } from '../../types'
 import { TONE_COLOR_DEFAULTS } from '../../store/useStore'
+import { FontPicker } from './FontPicker'
 
 // ─── Layer 1: Tone (mutually exclusive — sets the background mood) ────────────
 const TONE_VIBES: { id: string; label: string; desc: string; bg: string; dot: string; activeBorder: string; activeText: string }[] = [
@@ -273,24 +274,16 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
 
       {/* Typography */}
       <CollapsibleSection title="Typography" icon={<Type className="w-4.5 h-4.5" />} defaultOpen={false}>
-        <div>
-          <label className="label-base">Display Font (headings)</label>
-          <input
-            className="input-base font-mono"
-            placeholder="e.g. Gilda Display"
-            value={g.displayFont}
-            onChange={e => updateGlobal({ displayFont: e.target.value })}
-          />
-        </div>
-        <div>
-          <label className="label-base">Body Font</label>
-          <input
-            className="input-base font-mono"
-            placeholder="e.g. Geist, Inter"
-            value={g.bodyFont}
-            onChange={e => updateGlobal({ bodyFont: e.target.value })}
-          />
-        </div>
+        <FontPicker
+          label="Display Font (títulos / headings)"
+          value={g.displayFont}
+          onChange={font => updateGlobal({ displayFont: font })}
+        />
+        <FontPicker
+          label="Body Font (corpo do texto)"
+          value={g.bodyFont}
+          onChange={font => updateGlobal({ bodyFont: font })}
+        />
       </CollapsibleSection>
 
       {/* Colors */}
