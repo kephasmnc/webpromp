@@ -6,6 +6,52 @@ import type {
   Preset
 } from '../types'
 
+// ─── Random palettes per tone ──────────────────────────────────────────────────
+const TONE_PALETTES = {
+  dark: {
+    backgrounds: ['#050505', '#080810', '#0A0A0F', '#060608', '#070712', '#0C0C0C', '#050510'],
+    foregrounds: ['#F2EEE5', '#F0ECE3', '#EDE8DE', '#F5F1E8', '#EDE8E0'],
+    primaries:   ['#8BAAE0', '#A07EC8', '#7EC8B4', '#E08B9A', '#C8B47E', '#7EA8C8', '#B47EC8', '#7EC8A0', '#E0A07E'],
+    cards:       ['#111111', '#131318', '#0F0F14', '#121212', '#10101A', '#0E0E0E'],
+    muteds:      ['#252525', '#222230', '#1E1E2A', '#282828', '#202028'],
+  },
+  light: {
+    backgrounds: ['#FAF9F6', '#F5F2EB', '#FAFAF7', '#F8F4EE', '#F4F1E8', '#F7F4EF', '#FDFAF5'],
+    foregrounds: ['#1A1816', '#18170F', '#1C1B16', '#201E18', '#151412'],
+    primaries:   ['#6366F1', '#8B5CF6', '#EC4899', '#0EA5E9', '#10B981', '#F59E0B', '#EF4444', '#06B6D4', '#84CC16'],
+    cards:       ['#F0EDE4', '#EDE9E0', '#EAE6DC', '#F2EFE6', '#EEEBE2'],
+    muteds:      ['#E5E0D5', '#E0DBD0', '#DDD8CC', '#E8E3D8', '#DAD5CA'],
+  },
+  colorful: {
+    backgrounds: ['#0D0B14', '#07030F', '#050A0F', '#0A050F', '#080510', '#0A0810', '#06040F'],
+    foregrounds: ['#F8F8F8', '#F5F5F5', '#FAFAFA', '#F0F0F0', '#EBEBEB'],
+    primaries:   ['#C855F0', '#F05578', '#55C8F0', '#F0C855', '#55F078', '#F07855', '#A855F0', '#F0558B', '#55A0F0', '#F09055'],
+    cards:       ['#16121F', '#12101A', '#0F1318', '#1A1220', '#13101C'],
+    muteds:      ['#2A2338', '#241E35', '#1E2330', '#2D2040', '#201D32'],
+  },
+  charged: {
+    backgrounds: ['#E8E2D6', '#EDE9E0', '#E5DDD0', '#DDD6C8', '#E2DDD4', '#EAE5DA', '#E0DAD0', '#E6E0D5'],
+    foregrounds: ['#171210', '#1A1512', '#181210', '#1C1814', '#150F0D'],
+    primaries:   ['#FF2D87', '#0066FF', '#00CC7A', '#FF6B00', '#CC00FF', '#FF0044', '#00CCFF', '#FFD600', '#FF3366', '#00E5CC'],
+    cards:       ['#DDD7CA', '#D8D2C5', '#D5CFBF', '#DBD5C8', '#D0CABF'],
+    muteds:      ['#CEC8BB', '#C8C2B5', '#C5BFAF', '#CBC5B8', '#C0BAB0'],
+  },
+}
+
+function pick<T>(arr: T[]): T { return arr[Math.floor(Math.random() * arr.length)] }
+
+export function randomColorsForTone(tone: string): GlobalConfig['colors'] {
+  const p = TONE_PALETTES[tone as keyof typeof TONE_PALETTES]
+  if (!p) return { background: '#050505', foreground: '#F2EEE5', primary: '#8BAAE0', card: '#111111', muted: '#252525' }
+  return {
+    background: pick(p.backgrounds),
+    foreground: pick(p.foregrounds),
+    primary:    pick(p.primaries),
+    card:       pick(p.cards),
+    muted:      pick(p.muteds),
+  }
+}
+
 // ─── Preset Configs ────────────────────────────────────────────────────────────
 const PRESETS: Record<Preset, Partial<GlobalConfig>> = {
   'none': {},

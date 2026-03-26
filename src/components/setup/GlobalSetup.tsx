@@ -3,6 +3,7 @@ import {
   Palette, Sparkles, LayoutGrid, Sliders, Zap, ChevronDown, Type, Layers
 } from 'lucide-react'
 import type { GlobalConfig, Preset, ButtonStyle, AnimationIntensity, LayoutStyle } from '../../types'
+import { randomColorsForTone } from '../../store/useStore'
 import { FontPicker } from './FontPicker'
 
 // ─── Layer 1: Tone (mutually exclusive — sets the background mood) ────────────
@@ -98,9 +99,10 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
   const currentStyles = g.vibes.filter(v => STYLE_VIBES.includes(v))
 
   const selectTone = (toneId: string) => {
-    // Only update vibes — colors are controlled by the Colors section
     const styles = g.vibes.filter(v => STYLE_VIBES.includes(v))
-    updateGlobal({ vibes: [toneId, ...styles] })
+    // Apply random colors matching the tone — user can override manually after
+    const colors = randomColorsForTone(toneId)
+    updateGlobal({ vibes: [toneId, ...styles], colors, preset: 'none' })
   }
 
   const toggleStyle = (style: string) => {
@@ -163,9 +165,19 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
 
         {/* Layer 1: Tone */}
         <div>
-          <p className="text-[12px] font-extrabold uppercase tracking-[0.12em] text-mist mb-3">
-            Layer 1 — Background Tone <span className="text-sand ml-1">pick one</span>
-          </p>
+          <div className="flex items-center justify-between mb-3">
+            <p className="text-[12px] font-extrabold uppercase tracking-[0.12em] text-mist">
+              Layer 1 — Background Tone <span className="text-sand ml-1">pick one</span>
+            </p>
+            <button
+              onClick={() => updateGlobal({ colors: randomColorsForTone(currentTone) })}
+              className="flex items-center gap-1.5 text-[12px] font-bold text-mist hover:text-lilac transition-colors px-2.5 py-1 rounded-lg hover:bg-lilac-soft"
+              title="Gerar novas cores aleatórias para este tom"
+            >
+              <span className="text-base leading-none">🎲</span>
+              <span>Randomize</span>
+            </button>
+          </div>
           <div className="grid grid-cols-2 gap-2.5">
             {TONE_VIBES.map(tone => {
               const active = currentTone === tone.id
