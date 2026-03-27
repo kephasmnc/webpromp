@@ -144,19 +144,14 @@ const STYLE_DESIGN_LANGUAGE: Record<string, string> = {
 
 // ─── Layout Style Language ────────────────────────────────────────────────────
 const LAYOUT_STYLE_LANGUAGE: Record<string, string> = {
-  classic:    'Use proven web conventions: clean CSS grid, clear visual hierarchy, centered or symmetrical section compositions. IMPORTANT: each section must still look visually distinct from the previous — vary between centered, left-aligned, two-column splits, and full-width layouts. No two consecutive sections should have the same structure.',
-  asymmetric: 'Break the grid intentionally: uneven column splits (e.g. 40/60, 30/70), staggered elements, overlapping layers, varied section rhythms. EVERY section must have a different compositional logic — if one section centers content, the next must break left, then perhaps a diagonal split, then a masonry-style grid. Avoid any repeating structure.',
-  editorial:  'Treat typography as a graphic element. Dramatic font size contrasts (hero at 96–120px, captions at 11px). Text can overlap images. Pull quotes span multiple columns. Section intros use large decorative numerals. Each section reads like a different editorial spread — radically different from the previous.',
-  immersive:  'Full-bleed everything. No card borders — surfaces blend. Background media dominates. Overlays use gradients not opaque panels. Content floats. Vary depth: some sections feel "close", others "far". No two sections use the same blend/overlay technique.',
+  classic:    'Use proven web conventions: clean CSS grid, clear visual hierarchy, centered or symmetrical section compositions. Each section has a clear heading, body, and optional CTA. Layouts feel familiar and navigable. Maintain visual consistency across sections — same spacing rhythm, same alignment logic.',
+  asymmetric: 'Break the grid intentionally: uneven column splits (e.g. 40/60, 30/70), staggered elements, overlapping layers, varied section rhythms (some wide, some narrow). Avoid mirror-image symmetry. The asymmetric logic must be consistent throughout — it is the site\'s identity, not a per-section trick.',
+  editorial:  'Treat typography as a graphic element. Use dramatic font size contrasts (hero at 96–120px, captions at 11px). Text can overlap images. Pull quotes span multiple columns. Section intros use large decorative numerals or letters. Think high-end magazine — consistent editorial language from top to bottom.',
+  immersive:  'Full-bleed everything. No card borders — surfaces blend into each other. Background media (video/image) dominates. Overlays use gradients not opaque panels. Content floats over backgrounds. Minimal chrome — no visible page containers or boxes.',
 }
 
-const LAYOUT_VARIETY_DIRECTIVE = `LAYOUT VARIETY RULES (critical):
-- Every section must look structurally different from the previous one.
-- Alternate between: full-width centered, split left/right, asymmetric column, masonry grid, horizontal scroll, oversized type-only.
-- Vary section heights: some tall/cinematic (min-h-screen), others compact (py-16).
-- Vary card grids: 2-col, 3-col, 4-col, list format, horizontal cards — never the same twice.
-- Vary heading alignment per section: centered → left → right → centered again.
-- If two sections are similar in content, they MUST differ in structure/layout.`
+const ORIGINALITY_DIRECTIVE = `ORIGINALITY (important):
+Avoid generic landing page clichés. Do not default to predictable patterns (centered hero, 3-column icon grid, alternating chess sections). Instead, make confident design decisions: unexpected type scales, bold use of the accent color, unusual section proportions, or creative use of whitespace. The result should feel like a specific, opinionated design — not a template.`
 
 // ─── Global Patterns ──────────────────────────────────────────────────────────
 function buildGlobalPatterns(g: AppState['global']): string {
@@ -195,7 +190,7 @@ ${vibeSection}
 Composition style — ${layoutStyle.toUpperCase()}:
 ${layoutDesc}
 
-${LAYOUT_VARIETY_DIRECTIVE}
+${ORIGINALITY_DIRECTIVE}
 
 Section tags: ${sectionTagStyle}
 Pill badges: ${pillBadge}
