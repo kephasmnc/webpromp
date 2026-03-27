@@ -3,7 +3,7 @@ import type {
   AppState, GlobalConfig, Block, BlockType, BlockData,
   NavbarData, HeroData, MarqueeData, FeaturesData, ChessData, StatsData,
   TestimonialsData, PricingData, FAQData, CTAData, FooterData,
-  Preset
+  Preset, TargetPlatform
 } from '../types'
 
 // ─── Random palettes per tone ──────────────────────────────────────────────────
@@ -223,6 +223,7 @@ const initialState: AppState = {
     buttonStyle: 'pill',
     animationIntensity: 'subtle',
     layoutStyle: 'classic',
+    targetPlatform: 'lovable' as TargetPlatform,
   },
   blocks: [
     { id: '1', type: 'navbar',   enabled: true, data: createBlockData('navbar') },

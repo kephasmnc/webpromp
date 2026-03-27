@@ -1,8 +1,29 @@
 import type {
-  AppState, Block, BlockType,
+  AppState, Block, BlockType, TargetPlatform,
   NavbarData, HeroData, MarqueeData, FeaturesData, ChessData, StatsData,
   TestimonialsData, PricingData, FAQData, CTAData, FooterData,
 } from '../types'
+
+// ─── Hex → HSL (for V0 shadcn format) ─────────────────────────────────────────
+function hexToHsl(hex: string): string {
+  if (!/^#[0-9A-Fa-f]{6}$/.test(hex)) return '0 0% 50%'
+  const r = parseInt(hex.slice(1, 3), 16) / 255
+  const g = parseInt(hex.slice(3, 5), 16) / 255
+  const b = parseInt(hex.slice(5, 7), 16) / 255
+  const max = Math.max(r, g, b), min = Math.min(r, g, b)
+  const l = (max + min) / 2
+  let h = 0, s = 0
+  if (max !== min) {
+    const d = max - min
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    switch (max) {
+      case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break
+      case g: h = ((b - r) / d + 2) / 6; break
+      case b: h = ((r - g) / d + 4) / 6; break
+    }
+  }
+  return `${Math.round(h * 360)} ${Math.round(s * 100)}% ${Math.round(l * 100)}%`
+}
 
 // ─── Helpers ───────────────────────────────────────────────────────────────────
 function hasVideoBlock(blocks: Block[]): boolean {
@@ -26,10 +47,27 @@ function getBorderRadius(style: string): string {
   return '9999px'
 }
 
-function getAnimConfig(intensity: string): string {
-  if (intensity === 'none') return 'No animations — static layout only. Do NOT import or use framer-motion.'
-  if (intensity === 'dramatic') return `Framer Motion (import { motion } from 'framer-motion'). Apply to individual content blocks — NOT to the section wrapper. Pattern: <motion.div initial={{ opacity: 0, y: 40, scale: 0.92 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: index * 0.15 }}>. Apply to: each heading line, each card in a grid (stagger via index), stat numbers, CTA button. Hero heading lines should stagger: line 1 delay 0, line 2 delay 0.15, line 3 delay 0.3.`
-  return `Framer Motion (import { motion } from 'framer-motion'). Apply to individual content blocks — NOT to the section wrapper. Pattern: <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1], delay: index * 0.12 }}>. Apply to: section heading, each card in grids (stagger via index), hero text lines. Keep animations subtle — they should enhance, not distract.`
+function getAnimConfig(intensity: string, platform: TargetPlatform): string {
+  // Stitch generates static HTML only — no JS animations
+  if (platform === 'stitch') {
+    return 'CSS transitions only (Stitch is static HTML — no JS animation libraries). Use transition-all duration-300 ease-out on hover states, transform translate-y on card hovers, opacity transitions on overlays. Do NOT use framer-motion or any JS animation.'
+  }
+
+  if (intensity === 'none') return 'No animations — static layout only. Do NOT import or use any animation library.'
+
+  // Claude Code uses motion/react (the new package name)
+  const motionImport = platform === 'claude-code'
+    ? `import { motion } from 'motion/react'`
+    : `import { motion } from 'framer-motion'`
+
+  const lovableNote = platform === 'lovable'
+    ? ' (run: npm install framer-motion before generating)'
+    : ''
+
+  if (intensity === 'dramatic') {
+    return `${motionImport}${lovableNote}. Apply to individual content blocks — NOT the section wrapper. Pattern: <motion.div initial={{ opacity: 0, y: 40, scale: 0.92 }} whileInView={{ opacity: 1, y: 0, scale: 1 }} viewport={{ once: true, margin: '-80px' }} transition={{ duration: 0.7, ease: [0.76, 0, 0.24, 1], delay: index * 0.15 }}>. Apply to: each heading line, each grid card (stagger via index), stat numbers, CTA. Hero headline lines stagger: line1 delay:0, line2 delay:0.15, line3 delay:0.3.`
+  }
+  return `${motionImport}${lovableNote}. Apply to individual content blocks — NOT the section wrapper. Pattern: <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true, margin: '-60px' }} transition={{ duration: 0.6, ease: [0.25, 1, 0.5, 1], delay: index * 0.12 }}>. Apply to: section heading, grid cards (stagger via index), hero text lines.`
 }
 
 function getCardStyle(preset: string): string {
@@ -65,22 +103,59 @@ function getSignatureGradient(primary: string): string {
 }
 
 // ─── Stack Builder ─────────────────────────────────────────────────────────────
-function buildStack(blocks: Block[], preset: string): string {
-  const libs = ['React 18', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'lucide-react']
-  if (hasVideoBlock(blocks)) libs.push('hls.js (for HLS video streams, with <video> mp4 fallback)')
-  if (hasGlassmorphism(blocks, preset)) libs.push('shadcn/ui')
-  if (hasPricing(blocks)) libs.push('tailwindcss-animate')
+function buildStack(blocks: Block[], preset: string, platform: TargetPlatform): string {
+  // Stitch generates plain HTML/CSS — no framework stack
+  if (platform === 'stitch') return ''
+
+  const hasVideo = hasVideoBlock(blocks)
   const hasMarquee = blocks.some(b => {
     if (b.type === 'marquee') return true
     if (b.type === 'hero') return (b.data as HeroData).showMarquee
     return false
   })
+
+  if (platform === 'v0') {
+    const libs = ['Next.js 14 App Router', 'TypeScript', 'Tailwind CSS', 'shadcn/ui', 'Framer Motion', 'lucide-react']
+    if (hasVideo) libs.push('hls.js')
+    if (hasMarquee) libs.push('CSS keyframe marquee (custom)')
+    return `Stack: ${libs.join(' + ')}`
+  }
+
+  if (platform === 'claude-code') {
+    const libs = ['React 18', 'TypeScript', 'Vite', 'Tailwind CSS', 'motion (motion/react)', 'lucide-react']
+    if (hasVideo) libs.push('hls.js')
+    if (hasMarquee) libs.push('CSS keyframe marquee (custom)')
+    return `Stack: ${libs.join(' + ')}`
+  }
+
+  // Lovable default
+  const libs = ['React 18', 'TypeScript', 'Vite', 'Tailwind CSS', 'Framer Motion', 'lucide-react']
+  if (hasVideo) libs.push('hls.js (for HLS video streams, with <video> mp4 fallback)')
+  if (hasGlassmorphism(blocks, preset)) libs.push('shadcn/ui')
+  if (hasPricing(blocks)) libs.push('tailwindcss-animate')
   if (hasMarquee) libs.push('CSS keyframe marquee animation (custom)')
   return `Stack: ${libs.join(' + ')}`
 }
 
 // ─── Font Section ──────────────────────────────────────────────────────────────
-function buildFonts(g: AppState['global']): string {
+function buildFonts(g: AppState['global'], platform: TargetPlatform): string {
+  if (platform === 'stitch') {
+    // Stitch: descriptive only, no import URLs
+    if (g.displayFont !== g.bodyFont) {
+      return `Fonts: "${g.displayFont}" for display headings (italic accent lines), "${g.bodyFont}" for body text`
+    }
+    return `Font: "${g.bodyFont}" throughout`
+  }
+
+  if (platform === 'v0') {
+    // V0: Next.js font loading
+    if (g.displayFont !== g.bodyFont) {
+      return `Fonts (via next/font/google):\n"${g.displayFont}" — display headings, import as fontDisplay, apply as font-display variable\n"${g.bodyFont}" (weights 300–700) — body text, import as fontBody, apply as font-sans variable`
+    }
+    return `Font (via next/font/google): "${g.bodyFont}" (weights 300–700) — import and apply as --font-sans CSS variable`
+  }
+
+  // Lovable + Claude Code: Google Fonts
   const lines: string[] = ['Fonts (Google Fonts):']
   if (g.displayFont !== g.bodyFont) {
     lines.push(`${g.displayFont} — display/serif font-display (used for italic accent headings)`)
@@ -92,19 +167,56 @@ function buildFonts(g: AppState['global']): string {
 }
 
 // ─── Design System ─────────────────────────────────────────────────────────────
-function buildDesignSystem(g: AppState['global']): string {
+function buildDesignSystem(g: AppState['global'], platform: TargetPlatform): string {
   const r = getBorderRadius(g.buttonStyle)
+  const c = g.colors
+
+  if (platform === 'stitch') {
+    // Stitch: plain hex values, no CSS variables
+    return [
+      `Color palette (hex):`,
+      `Background: ${c.background}`,
+      `Foreground / text: ${c.foreground}`,
+      `Primary / accent: ${c.primary}`,
+      `Card surface: ${c.card}`,
+      `Muted: ${c.muted}`,
+      `Border: ${c.foreground}1F (foreground at ~12% opacity)`,
+      ``,
+      `Accent "${c.primary}": use on headings, CTA buttons, highlights, hover states, decorative elements`,
+    ].join('\n')
+  }
+
+  if (platform === 'v0') {
+    // V0: shadcn HSL CSS variables format
+    return [
+      `Design System (CSS variables in :root — shadcn HSL format, no commas):`,
+      `--background: ${hexToHsl(c.background)};`,
+      `--foreground: ${hexToHsl(c.foreground)};`,
+      `--primary: ${hexToHsl(c.primary)};`,
+      `--primary-foreground: ${hexToHsl(c.background)};`,
+      `--card: ${hexToHsl(c.card)};`,
+      `--card-foreground: ${hexToHsl(c.foreground)};`,
+      `--muted: ${hexToHsl(c.muted)};`,
+      `--muted-foreground: ${hexToHsl(c.foreground)}; /* adjust opacity */`,
+      `--border: ${hexToHsl(c.foreground)}; /* use at /[0.08] opacity */`,
+      `--radius: ${r};`,
+      ``,
+      `Primary/Accent: hsl(${hexToHsl(c.primary)}) — use on CTAs, links, highlights, hover states`,
+    ].join('\n')
+  }
+
+  // Lovable + Claude Code: hex CSS variables
   const lines = [
     `Design System (CSS variables in :root — hex values):`,
-    `--background: ${g.colors.background}`,
-    `--foreground: ${g.colors.foreground}`,
-    `--primary: ${g.colors.primary}`,
-    `--card: ${g.colors.card}`,
-    `--muted: ${g.colors.muted}`,
+    `--background: ${c.background}`,
+    `--foreground: ${c.foreground}`,
+    `--primary: ${c.primary}`,
+    `--card: ${c.card}`,
+    `--muted: ${c.muted}`,
     `--border: color-mix(in srgb, var(--foreground) 12%, transparent)`,
     `--radius: ${r}`,
     ``,
-    `Primary/Accent color: ${g.colors.primary}`,
+    `Primary/Accent color: ${c.primary}`,
     `Use on: CTA buttons, links, highlights, decorative accents, hover states`,
   ]
   if (g.preset === 'liquid-glass') {
@@ -154,8 +266,8 @@ const ORIGINALITY_DIRECTIVE = `ORIGINALITY (important):
 Avoid generic landing page clichés. Do not default to predictable patterns (centered hero, 3-column icon grid, alternating chess sections). Instead, make confident design decisions: unexpected type scales, bold use of the accent color, unusual section proportions, or creative use of whitespace. The result should feel like a specific, opinionated design — not a template.`
 
 // ─── Global Patterns ──────────────────────────────────────────────────────────
-function buildGlobalPatterns(g: AppState['global']): string {
-  const animConfig = getAnimConfig(g.animationIntensity)
+function buildGlobalPatterns(g: AppState['global'], platform: TargetPlatform): string {
+  const animConfig = getAnimConfig(g.animationIntensity, platform)
   const cardStyle = getCardStyle(g.preset)
   const headingStyle = getHeadingStyle(g.preset, g.displayFont, g.bodyFont)
   const sectionTagStyle = getSectionTagStyle(g.preset)
@@ -599,6 +711,7 @@ Right: "${d.copyright}" — text-foreground/30${bottomLinks ? `\nBottom links: $
 // ─── Main Prompt Builder ───────────────────────────────────────────────────────
 export function generatePrompt(state: AppState): string {
   const { global: g, blocks } = state
+  const platform: TargetPlatform = g.targetPlatform ?? 'lovable'
   const activeBlocks = blocks.filter(b => b.enabled !== false)
   if (activeBlocks.length === 0) return '// Add sections to generate your prompt'
 
@@ -607,27 +720,32 @@ export function generatePrompt(state: AppState): string {
 
   const sections: string[] = []
 
-  // Header
-  sections.push(`FULL RECREATION PROMPT
-Build a single-page landing page for "${brand}" — ${tagline}.`)
+  // Header — platform-specific preamble
+  const platformNote: Record<TargetPlatform, string> = {
+    lovable:      'Build a single-page landing page for',
+    v0:           'Generate a single-page landing page for',
+    stitch:       'Design a landing page for',
+    'claude-code': 'Build a single-page landing page for',
+  }
+  sections.push(`FULL RECREATION PROMPT\n${platformNote[platform]} "${brand}" — ${tagline}.`)
 
-  // Stack
-  sections.push(buildStack(activeBlocks, g.preset))
+  // Stack (empty for Stitch)
+  const stackLine = buildStack(activeBlocks, g.preset, platform)
+  if (stackLine) sections.push(stackLine)
 
   // Fonts
-  sections.push(buildFonts(g))
+  sections.push(buildFonts(g, platform))
 
   // Design System
-  sections.push(buildDesignSystem(g))
+  sections.push(buildDesignSystem(g, platform))
 
   // Global Patterns
-  sections.push(buildGlobalPatterns(g))
+  sections.push(buildGlobalPatterns(g, platform))
 
   // Sections
   let sectionIdx = 1
   for (const block of activeBlocks) {
     let sectionStr = ''
-
     try {
       switch (block.type) {
         case 'navbar':       sectionStr = buildNavbar(block, g, sectionIdx); break
@@ -645,32 +763,48 @@ Build a single-page landing page for "${brand}" — ${tagline}.`)
     } catch (_e) {
       sectionStr = `SECTION ${sectionIdx} — ${block.type.toUpperCase()}\n// (configure this section to generate its prompt)`
     }
-
-    if (sectionStr) {
-      sections.push(sectionStr)
-      sectionIdx++
-    }
+    if (sectionStr) { sections.push(sectionStr); sectionIdx++ }
   }
 
-  // Dependencies
-  const deps = ['framer-motion', 'lucide-react', 'tailwindcss-animate']
-  if (hasVideoBlock(activeBlocks)) deps.push('hls.js')
-  if (hasGlassmorphism(activeBlocks, g.preset)) deps.push('@radix-ui/react-slot', 'class-variance-authority')
-  if (activeBlocks.some(b => b.type === 'faq')) deps.push('@radix-ui/react-accordion')
-
-  sections.push(`Key Dependencies\n${deps.join(', ')}`)
+  // Dependencies — per platform
+  if (platform === 'stitch') {
+    // Stitch: pure HTML/CSS, no npm deps
+    sections.push(`Note for Stitch: This is plain HTML + Tailwind CSS output. No npm packages, no React framework.`)
+  } else if (platform === 'v0') {
+    const deps = ['framer-motion', 'lucide-react']
+    if (hasVideoBlock(activeBlocks)) deps.push('hls.js')
+    if (activeBlocks.some(b => b.type === 'faq')) deps.push('@radix-ui/react-accordion')
+    sections.push(`Key Dependencies\n${deps.join(', ')}\n\nshadcn/ui components: Button, Card, Badge${activeBlocks.some(b => b.type === 'faq') ? ', Accordion' : ''}${activeBlocks.some(b => b.type === 'pricing') ? ', Separator' : ''}`)
+  } else if (platform === 'claude-code') {
+    const deps = ['motion', 'lucide-react', 'tailwindcss-animate']
+    if (hasVideoBlock(activeBlocks)) deps.push('hls.js')
+    if (hasGlassmorphism(activeBlocks, g.preset)) deps.push('@radix-ui/react-slot', 'class-variance-authority')
+    if (activeBlocks.some(b => b.type === 'faq')) deps.push('@radix-ui/react-accordion')
+    sections.push(`Key Dependencies\n${deps.join(', ')}`)
+  } else {
+    // Lovable
+    const deps = ['framer-motion', 'lucide-react', 'tailwindcss-animate']
+    if (hasVideoBlock(activeBlocks)) deps.push('hls.js')
+    if (hasGlassmorphism(activeBlocks, g.preset)) deps.push('@radix-ui/react-slot', 'class-variance-authority')
+    if (activeBlocks.some(b => b.type === 'faq')) deps.push('@radix-ui/react-accordion')
+    sections.push(`Key Dependencies\n${deps.join(', ')}\n\nDo not touch: any Supabase configuration files or existing auth logic.`)
+  }
 
   // Tailwind Config
-  const fontFamilyConfig = g.displayFont !== g.bodyFont
-    ? `fontFamily: { sans: ["'${g.bodyFont}'", "sans-serif"], display: ["'${g.displayFont}'", "serif"] }`
-    : `fontFamily: { sans: ["'${g.bodyFont}'", "sans-serif"] }`
+  if (platform !== 'stitch') {
+    const fontFamilyConfig = platform === 'v0'
+      ? `// Apply fonts via CSS variables set in layout.tsx\nfontFamily: { sans: ["var(--font-body)", "sans-serif"]${g.displayFont !== g.bodyFont ? `, display: ["var(--font-display)", "serif"]` : ''} }`
+      : (g.displayFont !== g.bodyFont
+          ? `fontFamily: { sans: ["'${g.bodyFont}'", "sans-serif"], display: ["'${g.displayFont}'", "serif"] }`
+          : `fontFamily: { sans: ["'${g.bodyFont}'", "sans-serif"] }`)
 
-  const hasMarquee = activeBlocks.some(b => b.type === 'marquee' || (b.type === 'hero' && (b.data as HeroData).showMarquee))
-  const marqueeConfig = hasMarquee
-    ? `\nMarquee keyframe: "0%": { transform: "translateX(0)" }, "100%": { transform: "translateX(-50%)" } — animation: marquee 20s linear infinite`
-    : ''
+    const hasMarquee = activeBlocks.some(b => b.type === 'marquee' || (b.type === 'hero' && (b.data as HeroData).showMarquee))
+    const marqueeConfig = hasMarquee
+      ? `\nMarquee keyframe: "0%": { transform: "translateX(0)" }, "100%": { transform: "translateX(-50%)" } — animation: marquee 20s linear infinite`
+      : ''
 
-  sections.push(`Tailwind Config Extras\n${fontFamilyConfig}${marqueeConfig}`)
+    sections.push(`Tailwind Config Extras\n${fontFamilyConfig}${marqueeConfig}`)
+  }
 
   // PAGE STRUCTURE
   const componentNames = activeBlocks.map(b => {
@@ -680,12 +814,20 @@ Build a single-page landing page for "${brand}" — ${tagline}.`)
       testimonials: 'TestimonialsSection', pricing: 'PricingSection',
       faq: 'FAQSection', cta: 'CTASection', footer: 'FooterSection',
     }
-    return `<${names[b.type]} />`
+    return platform === 'stitch'
+      ? `<!-- ${names[b.type]} -->`
+      : `<${names[b.type]} />`
   })
 
-  sections.push(`PAGE STRUCTURE (App.tsx)\n${componentNames.join('\n')}`)
+  const structureTitle = platform === 'stitch'
+    ? 'PAGE STRUCTURE (HTML sections order)'
+    : platform === 'v0'
+      ? 'PAGE STRUCTURE (page.tsx)'
+      : 'PAGE STRUCTURE (App.tsx)'
 
-  return sections.join('\n\n—\n\n')
+  sections.push(`${structureTitle}\n${componentNames.join('\n')}`)
+
+  return sections.filter(Boolean).join('\n\n—\n\n')
 }
 
 export function estimateTokens(text: string): number {

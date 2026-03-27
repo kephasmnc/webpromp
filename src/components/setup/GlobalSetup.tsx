@@ -1,10 +1,18 @@
 import { useState } from 'react'
 import {
-  Palette, Sparkles, LayoutGrid, Sliders, Zap, ChevronDown, Type, Layers
+  Palette, Sparkles, LayoutGrid, Sliders, Zap, ChevronDown, Type, Layers, Monitor
 } from 'lucide-react'
-import type { GlobalConfig, Preset, ButtonStyle, AnimationIntensity, LayoutStyle } from '../../types'
+import type { GlobalConfig, Preset, ButtonStyle, AnimationIntensity, LayoutStyle, TargetPlatform } from '../../types'
 import { randomColorsForTone } from '../../store/useStore'
 import { FontPicker } from './FontPicker'
+
+// ─── Platform configs ────────────────────────────────────────────────────────
+const PLATFORMS: { id: TargetPlatform; label: string; stack: string; anim: string; note?: string }[] = [
+  { id: 'lovable',     label: 'Lovable',     stack: 'React + Vite',     anim: 'Framer Motion' },
+  { id: 'v0',          label: 'V0',          stack: 'Next.js + shadcn', anim: 'Framer Motion' },
+  { id: 'stitch',      label: 'Stitch',      stack: 'HTML + Tailwind',  anim: 'CSS only',     note: 'sem animações JS' },
+  { id: 'claude-code', label: 'Claude Code', stack: 'React + Vite',     anim: 'motion/react' },
+]
 
 // ─── Layer 1: Tone (mutually exclusive — sets the background mood) ────────────
 const TONE_VIBES: { id: string; label: string; desc: string; bg: string; dot: string; activeBorder: string; activeText: string }[] = [
@@ -129,13 +137,39 @@ export function GlobalSetup({ global: g, updateGlobal, applyPreset }: Props) {
     { key: 'muted',      label: 'Muted' },
   ]
 
+  const currentPlatform = g.targetPlatform ?? 'lovable'
+
   return (
     <div className="flex flex-col">
-      {/* Subtitle */}
+      {/* Platform Selector */}
       <div className="px-5 py-4 border-b border-sand">
-        <p className="text-[14px] text-mist font-semibold leading-relaxed">
-          Global settings apply to the entire generated landing page prompt.
+        <p className="text-[12px] font-extrabold uppercase tracking-[0.12em] text-mist mb-3 flex items-center gap-2">
+          <Monitor className="w-3.5 h-3.5" /> Plataforma alvo
         </p>
+        <div className="grid grid-cols-2 gap-2">
+          {PLATFORMS.map(p => {
+            const active = currentPlatform === p.id
+            return (
+              <button
+                key={p.id}
+                onClick={() => updateGlobal({ targetPlatform: p.id })}
+                className={`px-3 py-2.5 rounded-xl border text-left transition-all duration-150 ${
+                  active
+                    ? 'border-lilac bg-lilac-soft'
+                    : 'border-sand bg-white hover:border-lilac/40 hover:bg-beige/40'
+                }`}
+              >
+                <div className={`text-[14px] font-extrabold leading-tight ${active ? 'text-lilac' : 'text-ink'}`}>
+                  {p.label}
+                </div>
+                <div className="text-[11px] font-semibold text-mist leading-tight mt-0.5">{p.stack}</div>
+                <div className={`text-[11px] font-bold mt-0.5 ${p.note ? 'text-amber-600' : active ? 'text-lilac/70' : 'text-mist/70'}`}>
+                  {p.note ?? p.anim}
+                </div>
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {/* Brand Identity */}

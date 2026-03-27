@@ -14,6 +14,7 @@ export type BlockType =
 export type Preset = 'none' | 'dark-minimal' | 'liquid-glass' | 'light-corporate'
 export type ButtonStyle = 'sharp' | 'rounded' | 'pill'
 export type AnimationIntensity = 'none' | 'subtle' | 'dramatic'
+export type TargetPlatform = 'lovable' | 'v0' | 'stitch' | 'claude-code'
 
 export interface ColorPalette {
   background: string
@@ -38,6 +39,7 @@ export interface GlobalConfig {
   buttonStyle: ButtonStyle
   animationIntensity: AnimationIntensity
   layoutStyle: LayoutStyle
+  targetPlatform: TargetPlatform
 }
 
 // ─── Block Data Types ─────────────────────────────────────────────────────────
