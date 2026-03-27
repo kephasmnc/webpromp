@@ -207,7 +207,7 @@ function buildNavbar(b: Block, g: AppState['global'], idx: number): string {
   const linksStr = d.links.map(l => `"${l.label}"`).join(', ')
 
   let ctaStyle = ''
-  if (d.ctaStyle === 'gradient') ctaStyle = `bg-gradient-to-r from-[hsl(${g.colors.primary})] to-[hsl(40,80%,82%)] text-background rounded-${g.buttonStyle === 'pill' ? 'full' : g.buttonStyle === 'rounded' ? 'lg' : 'none'} px-5 py-2 text-sm font-medium`
+  if (d.ctaStyle === 'gradient') ctaStyle = `bg-gradient-to-r from-[${g.colors.primary}] to-[#E8C87A] text-background rounded-${g.buttonStyle === 'pill' ? 'full' : g.buttonStyle === 'rounded' ? 'lg' : 'none'} px-5 py-2 text-sm font-medium`
   else if (d.ctaStyle === 'solid') ctaStyle = `bg-foreground text-background rounded-full px-5 py-2 text-sm font-medium`
   else ctaStyle = `border border-foreground/30 rounded-full px-5 py-2 text-sm font-medium text-foreground`
 
@@ -320,7 +320,7 @@ Description: "${d.subtitle}"
 text-foreground/70 text-sm md:text-base leading-relaxed max-w-md
 
 CTA buttons:
-Primary: "${d.ctaPrimary}" — gradient pill bg-gradient-to-r from-[hsl(${g.colors.primary})] to-[hsl(40,80%,82%)] text-background rounded-full px-6 py-3 font-medium
+Primary: "${d.ctaPrimary}" — gradient pill bg-gradient-to-r from-[${g.colors.primary}] to-[#E8C87A] text-background rounded-full px-6 py-3 font-medium
 ${d.ctaSecondary ? `Secondary: "${d.ctaSecondary}" — border border-foreground/20 rounded-full px-6 py-3 text-foreground/70` : ''}
 ${marqueeSection}`
 }
@@ -473,7 +473,7 @@ ${colCount} testimonial cards (grid grid-cols-1 md:grid-cols-${colCount} gap-6):
 Each card: ${cardStyle} p-8 md:p-10 flex flex-col justify-between
 Decorative " mark: absolute top-6 right-8 text-foreground/[0.06] text-7xl font-display
 Quote text: text-foreground/70 text-[15px] leading-relaxed
-Avatar circle: w-10 h-10 rounded-full with signature gradient bg-gradient-to-r from-[hsl(${g.colors.primary})] to-[hsl(40,80%,82%)], showing first initial letter
+Avatar circle: w-10 h-10 rounded-full with signature gradient bg-gradient-to-r from-[${g.colors.primary}] to-[#E8C87A], showing first initial letter
 Name: text-sm font-medium, title/company: text-xs text-foreground/40
 
 ${testimonialsStr}
@@ -504,7 +504,7 @@ Section tag: "${d.sectionTag}"
 H2: "${d.heading}"
 
 ${planCount} pricing cards (grid grid-cols-1 md:grid-cols-${planCount} gap-6 items-start):
-Each card: ${cardStyle} p-8. Highlighted card gets: border-foreground/[0.15] bg-foreground/[0.05] ring-1 ring-[hsl(${g.colors.primary})] relative.
+Each card: ${cardStyle} p-8. Highlighted card gets: border-foreground/[0.15] bg-foreground/[0.05] ring-1 ring-[${g.colors.primary}] relative.
 
 ${plansStr}
 
@@ -561,7 +561,7 @@ H2: "${d.heading1} / ${d.heading2}" — size clamp(2.2rem,5vw,4.5rem)
 Description: "${d.description}"
 
 Two buttons:
-"${d.ctaPrimary}" — gradient pill bg-gradient-to-r from-[hsl(${g.colors.primary})] to-[hsl(40,80%,82%)] text-background rounded-full px-8 py-4 text-base font-medium
+"${d.ctaPrimary}" — gradient pill bg-gradient-to-r from-[${g.colors.primary}] to-[#E8C87A] text-background rounded-full px-8 py-4 text-base font-medium
 ${d.ctaSecondary ? `"${d.ctaSecondary}" — solid bg-foreground text-background rounded-full px-8 py-4 text-base font-medium` : ''}
 
 Framer Motion fade-up, duration 0.7`
